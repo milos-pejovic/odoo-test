@@ -10,12 +10,12 @@ lib_name = 'odoo'
 
 setup(
     name='odoo',
-    version=version,
-    description=description,
-    long_description=long_desc,
-    url=url,
-    author=author,
-    author_email=author_email,
+    version=1.0,
+    description="Lorem",
+    long_description="Lorem ipsum",
+    url="https://",
+    author="milos",
+    author_email="milos1pejovic@gmail.com",
     classifiers=[c for c in classifiers.split('\n') if c],
     license=license,
     scripts=['setup/odoo'],
