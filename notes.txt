@@ -1,0 +1,1 @@
+python3 odoo-bin -c /home/milos/Desktop/odoo-18/odoo.conf

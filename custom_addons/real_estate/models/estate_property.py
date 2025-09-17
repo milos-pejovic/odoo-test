@@ -1,8 +1,8 @@
 from odoo import models, fields
 
 
-class Property(models.Model):
-    _name = "estate.property"
+class EstateProperty(models.Model):
+    _name = "real_estate.property"
     _description = "Real estate property model"
     _order = "sequence"
 
@@ -25,8 +25,18 @@ class Property(models.Model):
     expected_price = fields.Float("Expected price", required=True)
     selling_price = fields.Float("Selling price")
     bedrooms = fields.Integer("Bedrooms")
-    living_area = fields.Integer("LIving area")
-    facades = fields.Integer("Facades")
+    living_area = fields.Integer("Living area")
+    facades = fields.Integer("Facades", invicible=True) #TODO: Confirm:  Hide in forms?
     garage = fields.Boolean("Garage", default=False)
     garden_area = fields.Integer("Garden area")
-    garden_orientation = fields.Selection(string="Garder orientation", selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
+    garden_orientation = fields.Selection(string="Garder orientation", selection=
+        [
+            ("north", "North"), 
+            ("south", "South"), 
+            ("east", "East"), 
+            ("west", "West")
+        ],
+        copy=False # If this record is duplicated, this field will not be duplicated
+    )
+
+    sequence = fields.Integer(string="Sequence", default=10) # Added myself

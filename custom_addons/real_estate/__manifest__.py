@@ -9,12 +9,14 @@
     """,
     # data files always loaded at installation
     "data": [
-        "views/mymodule_view.xml",
-        "security/ir.model.aacess.csv"
+        "security/ir.model.access.csv",
+        "views/estate_property_views.xml", # Action first
+        "views/estate_menus.xml" # Then the menu that references it
     ],
     # data files containing optionally loaded demonstration data
     "demo": [
         "demo/demo_data.xml",
     ],
     "application": True,
+    "installable": True
 }
