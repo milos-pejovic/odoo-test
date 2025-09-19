@@ -1,7 +1,24 @@
 <odoo>
-    <menuitem id="root_level" name="Root">
-        <menuitem id="second_level" name="Estate">
-            <menuitem id="third_level" name="Third" action="estate_property_action" />
+    <menuitem id="root_level_1" name="Real Estate">
+        <menuitem id="second_level_1" name="Advertiesements">
+            <menuitem id="third_level_1" name="Third" action="estate_property_action" />
+        </menuitem>
+
+        <menuitem id="second_level_2" name="Settings">
+            <menuitem id="third_level_2" name="Property types" action="estate_property_type_action" />
+            <menuitem id="third_level_property_tags" name="Property tags" action="estate_property_tag_action" />
+        </menuitem>
+
+        <menuitem id="second_level_3" name="Offers">
+            <menuitem id="third_level_3" name="Offers" action="estate_offer_action" />
+        </menuitem>
+
+        <menuitem id="second_level_4" name="Partners">
+            <menuitem id="third_level_4" name="Partners" action="estate_partner_action" />
+        </menuitem>
+
+        <menuitem id="second_level_5" name="Buyers">
+            <menuitem id="third_level_5" name="Buyers" action="estate_buyers_action" />
         </menuitem>
     </menuitem>
 </odoo>
