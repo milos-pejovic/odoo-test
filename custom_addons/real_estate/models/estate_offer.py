@@ -16,6 +16,7 @@ class EstateOffer(models.Model):
     )
     partner_id = fields.Many2one("real_estate.partner", required=True)
     property_id = fields.Many2one("real_estate.property", required=True)
+    type_id = fields.Many2one(related="property_id.property_type_id", store=True) # TODO: Check what this does
     
     sequence = fields.Integer(default=10)
     

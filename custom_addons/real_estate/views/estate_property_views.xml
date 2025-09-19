@@ -16,7 +16,9 @@
                     </group>
 
                     <group>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
                     </group>
 
                     <group>
@@ -28,15 +30,30 @@
                         
                         <group>
                             <field name="expected_price" />
+                            <field name="best_offer"/>
                             <field name="selling_price" />
                         </group>
                     </group>
 
                     <group>
                         <notebook>
+                            <page string="Computed dates (Temporary)">
+                                <group>
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
+                                </group>
+                            </page>
+
                             <page string="Description">
                                 <group>
-                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" string="Living area (sqm)" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <!-- <field name="garden" /> -->
+                                    <field name="garden_area" string="Garden area (sqm)" />
+                                    <field name="garden_orientation" />
+                                    <field name="total_area" string="Total area (sqm)" />
                                 </group>
                             </page>
 
