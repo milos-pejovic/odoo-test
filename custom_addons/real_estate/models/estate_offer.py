@@ -19,4 +19,3 @@ class EstateOffer(models.Model):
     type_id = fields.Many2one(related="property_id.property_type_id", store=True) # TODO: Check what this does
     
     sequence = fields.Integer(default=10)
-    
