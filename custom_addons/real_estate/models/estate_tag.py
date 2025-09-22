@@ -11,3 +11,4 @@ class PropertyTag(models.Model):
     property_ids = fields.Many2many("real_estate.property", "Properties")
 
     sequence = fields.Integer(string="Sequence", default=10) # Added myself
+    

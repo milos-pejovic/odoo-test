@@ -1,7 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_property_user,Access Estate Property,model_real_estate_property,base.group_user,1,1,1,0
-access_estate_property_type_user,Access Estate Property Type,model_real_estate_property_type,base.group_user,1,1,1,0
-access_partner_user,Access Estate Partner,model_real_estate_partner,base.group_user,1,1,1,0
-access_offer_user,Access Estate Offer,model_real_estate_offer,base.group_user,1,1,1,0
-access_res_partner_portal,access.res.partner.portal,base.model_res_partner,base.group_user,1,1,1,0
-access_property_tag,Access Property Tag,model_real_estate_property_tag,base.group_user,1,1,1,0
+access_property_user,Access Estate Property,model_real_estate_property,base.group_user,1,1,1,1
+access_estate_property_type_user,Access Estate Property Type,model_real_estate_property_type,base.group_user,1,1,1,1
+access_partner_user,Access Estate Partner,model_real_estate_partner,base.group_user,1,1,1,1
+access_offer_user,Access Estate Offer,model_real_estate_offer,base.group_user,1,1,1,1
+access_res_partner_portal,access.res.partner.portal,base.model_res_partner,base.group_user,1,1,1,1
+access_property_tag,Access Property Tag,model_real_estate_property_tag,base.group_user,1,1,1,1
+access_development,Access Development,model_real_estate_dev,base.group_user,1,1,1,1

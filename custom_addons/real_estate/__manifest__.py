@@ -18,6 +18,7 @@
         "views/estate_partner.xml",
         "views/estate_buyers_view.xml",
         "views/estate_property_tag.xml",
+        "views/estate_development.xml",
 
         # Then the menu that references it
         "views/estate_menus.xml",

@@ -1,0 +1,12 @@
+
+<odoo>
+   <record id="action_my_server" model="ir.actions.server">
+        <field name="name">Do Something</field>
+        <field name="model_id" ref="model_real_estate_property"/> <!-- the model it acts on -->
+        <field name="binding_model_id" ref="model_real_estate_property"/> <!-- optional for button binding -->
+        <field name="state">code</field>
+        <field name="code">
+            env['real_estate.dev'].search([]).seed()
+        </field>
+    </record>
+</odoo>

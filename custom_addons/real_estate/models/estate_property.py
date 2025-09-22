@@ -75,7 +75,7 @@ class EstateProperty(models.Model):
     )
 
     buyer_id = fields.Many2one(
-        "res.partner",
+        "real_estate.partner",
         string="Buyer",
         copy=False
     )
@@ -99,7 +99,14 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for property in self:
-            property.best_offer = max(property.offer_ids.mapped("price")) if property.offer_ids else 0
+            if property.offer_ids:
+                offer_prices = [offer.price for offer in property.offer_ids if offer.status != "refused"]
+                if len(offer_prices) > 0:
+                    property.best_offer = max(offer_prices)
+                else:
+                    property.best_offer = 0    
+            else:
+                property.best_offer = 0
 
     @api.depends("validity")
     def _compute_date_deadline(self):

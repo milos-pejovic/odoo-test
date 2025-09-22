@@ -3,3 +3,4 @@ from . import property_type
 from . import estate_partner
 from . import estate_offer
 from . import estate_tag
+from . import dev

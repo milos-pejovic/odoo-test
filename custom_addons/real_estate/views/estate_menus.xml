@@ -20,5 +20,9 @@
         <menuitem id="second_level_5" name="Buyers">
             <menuitem id="third_level_5" name="Buyers" action="estate_buyers_action" />
         </menuitem>
+
+        <menuitem id="second_level_6" name="(Development)">
+            <menuitem id="third_level_6" name="Development" action="action_my_server" />
+        </menuitem>
     </menuitem>
 </odoo>

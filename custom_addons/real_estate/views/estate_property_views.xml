@@ -78,30 +78,19 @@
                                         <button icon="fa-times" title="Refuse offer" type="object" name="action_refuse" /> 
                                         <field name="status"/>
                                     </list>
-
-                                    <!-- <form>
-                                        <group>
-                                            <field name="partner_id"/>
-                                            <field name="price"/>
-                                            <field name="status"/>
-                                        </group>
-                                    </form> -->
-
                                 </field>
                             </page>
 
                             <page string="Other Info">
                                 <group>
                                     <field name="seller_id" />
-                                    <field name="buyer_id" readonly="1" placeholder="Property not sold yet" />
+                                    <field name="buyer_id" readonly="1" />
                                 </group>
                             </page>
                         </notebook>
                     </group>
                 </sheet>
             </form>
-
-
         </field>
     </record>
 
