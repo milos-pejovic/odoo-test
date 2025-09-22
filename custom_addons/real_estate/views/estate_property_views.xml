@@ -6,8 +6,19 @@
         <field name="name">real_estate.property.view.form</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
-
             <form>
+                <group>
+                    <button name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        class="btn btn-primary" />
+
+                    <button name="action_sold"
+                        type="object"
+                        string="Sold"
+                        class="btn btn-primary" />
+                </group>
+                
                 <sheet>
                     <group>
                         <h1>
@@ -23,7 +34,7 @@
 
                     <group>
                         <group>
-                            <field name="create_date" />
+                            <field name="status" readonly="1"/>
                             <field name="property_type_id" />
                             <field name="postcode" placeholder="Enter postcode" />
                             <field name="date_availability" />
@@ -63,22 +74,26 @@
                                     <list editable="bottom">
                                         <field name="partner_id"/>
                                         <field name="price"/>
+                                        <button icon="fa-check" title="Accept offer" type="object" name="action_accept" />
+                                        <button icon="fa-times" title="Refuse offer" type="object" name="action_refuse" /> 
                                         <field name="status"/>
                                     </list>
-                                    <form>
+
+                                    <!-- <form>
                                         <group>
                                             <field name="partner_id"/>
                                             <field name="price"/>
                                             <field name="status"/>
                                         </group>
-                                    </form>
+                                    </form> -->
+
                                 </field>
                             </page>
 
                             <page string="Other Info">
                                 <group>
                                     <field name="seller_id" />
-                                    <field name="buyer_id" />
+                                    <field name="buyer_id" readonly="1" placeholder="Property not sold yet" />
                                 </group>
                             </page>
                         </notebook>
@@ -98,7 +113,7 @@
         
             <list>
                 <field name="name"/>
-                <field name="description"/>
+                <field name="status"/>
                 <field name="create_date" options="{'readonly': True}"/>
                 <field name="number_of_offers"/>
                 <field name="tag_ids" widget="many2many_tags"/>

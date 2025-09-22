@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
@@ -42,6 +43,15 @@ class EstateProperty(models.Model):
     )
     validity = fields.Integer("Validity (days)", default=7)
     sequence = fields.Integer(string="Sequence", default=10) # Added myself
+    status = fields.Selection(string="Status",selection=
+        [
+            ("active", "Active"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled")   
+        ],
+        copy=False,
+        default="active"
+    )
 
     #########################################################################################################
     # Computed fields
@@ -182,3 +192,21 @@ class EstateProperty(models.Model):
         for property in self:
             if not property.garden:
                 property.garden_orientation = None ##TODO: No business logic in onchange methods. Should this be here?
+
+    #########################################################################################################
+    # Actions 
+    #########################################################################################################
+
+    def action_cancel(self):
+        for property in self:
+            if property.status == "sold":
+                raise UserError(_("Cannot cancel a property that has already been sold."))
+            property.status = "cancelled"
+        return True
+
+    def action_sold(self):
+        for property in self:
+            if property.status == "cancelled":
+                raise UserError(_("Cannot sell a property that has been cancelled."))
+            property.status = "sold"
+        return True
