@@ -5,6 +5,7 @@ class PropertyType(models.Model):
     _name = "real_estate.property_type"
     _description = "Real estate property type"
     _order = "sequence"
+    _sql_constraints = [("unique_type_name", "UNIQUE(name)", "Property type name must be unique")]
 
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many(

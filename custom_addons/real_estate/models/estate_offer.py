@@ -5,6 +5,7 @@ class EstateOffer(models.Model):
     _name = "real_estate.offer"
     _description = "Offer for a cartain property"
     _order = "status"
+    _sql_constraints = [("positive_price", "CHECK(price > 0)", "Offer price must be positive.")]
 
     price = fields.Float()
     status = fields.Selection(
@@ -16,7 +17,7 @@ class EstateOffer(models.Model):
     )
     partner_id = fields.Many2one("real_estate.partner", required=True)
     property_id = fields.Many2one("real_estate.property", required=True)
-    type_id = fields.Many2one(related="property_id.property_type_id", store=True) # TODO: Check what this does
+    type_id = fields.Many2one(related="property_id.property_type_id", store=True) ##TODO: Revise store=True here
     
     #########################################################################################################
     # Actions

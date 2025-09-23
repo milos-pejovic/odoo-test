@@ -7,6 +7,16 @@ class EstateProperty(models.Model):
     _description = "Real estate property model"
     _order = "selling_price desc"
 
+    ##TODO: Add other constraints...
+    _sql_constraints = [
+        ("positive_expected_price", "CHECK(expected_price > 0)", "Expected price must be positive."),
+        ("positive_selling_price", "CHECK(selling_price) > 0", "Selling price must be positive"),
+        ("positive_bedrooms", "CHECK(bedrooms > 0)", "The number of bedrooms must be positive"),
+        ("positive_garden_area", "CHECK(garden_area >= 0)", "The garden area cannot be negative"),
+        ("positive_garden_area", "CHECK(living_area >= 0)", "The living area cannot be negative"),
+        ("date_availability_in_the_future", "CHECK(date_availability >= CURRENT_DATE)", "Date availability cannot be in the past."),
+    ]
+
     # These attributes are availiable to all field types:
     # string (str, default: field’s name)
     # The label of the field in UI (visible by users).
@@ -42,7 +52,6 @@ class EstateProperty(models.Model):
         copy=False # If this record is duplicated, this field will not be duplicated
     )
     validity = fields.Integer("Validity (days)", default=7)
-    sequence = fields.Integer(string="Sequence", default=10) # Added myself
     status = fields.Selection(string="Status",selection=
         [
             ("active", "Active"),
@@ -73,13 +82,11 @@ class EstateProperty(models.Model):
         string="Seller",
         default=lambda self: self.env.user # The current user
     )
-
     buyer_id = fields.Many2one(
         comodel_name="real_estate.partner",
         string="Buyer",
         copy=False
     )
-
     tag_ids = fields.Many2many("real_estate.property_tag", "Tags")
 
     #########################################################################################################
@@ -140,46 +147,49 @@ class EstateProperty(models.Model):
                 }
             }
         
-    @api.onchange("expected_price")
-    def _onchange_expected_price(self):
-        ##TODO: Find out how to validate this field so that it must be positive
-        for property in self:
-            if property.expected_price < 0:
-                property.expected_price = abs(property.expected_price)
-                return {
-                    "warning" : {
-                        "title" : _("Negative value"),
-                        "message" : _("Expected price cannot be negative")
-                    }
-                }
-            
-    @api.onchange("selling_price")
-    def _onchange_selling_price(self):
-        ##TODO: Find out how to validate this field so that it must be positive
-        for property in self:
-            if property.selling_price < 0:
-                property.selling_price = abs(property.selling_price)
-                return {
-                    "warning" : {
-                        "title" : _("Negative value"),
-                        "message" : _("Selling price cannot be negative")
-                    }
-                }
+    ##TODO: This would perform validation on frontend
+    # @api.onchange("expected_price")
+    # def _onchange_expected_price(self):
+    #     ##TODO: Find out how to validate this field so that it must be positive
+    #     for property in self:
+    #         if property.expected_price < 0:
+    #             property.expected_price = abs(property.expected_price)
+    #             return {
+    #                 "warning" : {
+    #                     "title" : _("Negative value"),
+    #                     "message" : _("Expected price cannot be negative")
+    #                 }
+    #             }
+
+    ##TODO: This would perform validation on frontend 
+    # @api.onchange("selling_price")
+    # def _onchange_selling_price(self):
+    #     ##TODO: Find out how to validate this field so that it must be positive
+    #     for property in self:
+    #         if property.selling_price < 0:
+    #             property.selling_price = abs(property.selling_price)
+    #             return {
+    #                 "warning" : {
+    #                     "title" : _("Negative value"),
+    #                     "message" : _("Selling price cannot be negative")
+    #                 }
+    #             }
     
-    @api.onchange("garden_area")
-    def _onchange_garden_area(self):
-        ##TODO: This forces the value of gardern area to be 0 if garden is False, but still the field is not readonly
-        for property in self:
-            if not property.garden:
-                property.garden_area = 0 ##TODO: No business logic in onchange methods. Should this be here?
-            elif property.garden_area < 0:
-                property.garden_area = 0
-                return {
-                    "warning" : {
-                        "title" : _("Negative value"),
-                        "message" : _("Garden area cannot be negative")
-                    }
-                }
+    ##TODO: This would perform validation on frontend 
+    # @api.onchange("garden_area")
+    # def _onchange_garden_area(self):
+    #     ##TODO: This forces the value of gardern area to be 0 if garden is False, but still the field is not readonly
+    #     for property in self:
+    #         if not property.garden:
+    #             property.garden_area = 0 ##TODO: No business logic in onchange methods. Should this be here?
+    #         elif property.garden_area < 0:
+    #             property.garden_area = 0
+    #             return {
+    #                 "warning" : {
+    #                     "title" : _("Negative value"),
+    #                     "message" : _("Garden area cannot be negative")
+    #                 }
+    #             }
             
     @api.onchange("living_area")
     def _onchange_living_area(self):
