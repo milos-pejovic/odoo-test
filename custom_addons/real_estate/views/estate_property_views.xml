@@ -40,7 +40,7 @@
                         </group>
                         
                         <group>
-                            <field name="expected_price" placeholder="Enter expected price"/>
+                            <field name="expected_price" readonly="status == 'sold'"/>
                             <field name="best_offer"/>
                             <field name="selling_price" readonly="1"/>
                         </group>
@@ -72,7 +72,7 @@
                                 <field name="offer_ids">
                                     <list editable="bottom">
                                         <field name="partner_id"/>
-                                        <field name="price"/>
+                                        <field name="price" invisible="parent.status == 'sold'"/><!-- ##TODO: Don;t show if parent's status is "sold"  -->
                                         <button icon="fa-check" title="Accept offer" type="object" name="action_accept" />
                                         <button icon="fa-times" title="Refuse offer" type="object" name="action_refuse" /> 
                                         <field name="status"/>
@@ -101,9 +101,9 @@
             <list default_order="create_date desc, name">
                 <field name="name"/>
                 <field name="status"/>
-                <field name="create_date" options="{'readonly': True}"/>
+                <field name="create_date" optional="True" />
                 <field name="number_of_offers"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" optional="True"/>
                 <field name="date_availability"/>
                 <field name="expected_price"/>
                 <field name="selling_price" readonly="1"/>

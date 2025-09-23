@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "real_estate.property"
@@ -10,10 +11,10 @@ class EstateProperty(models.Model):
     ##TODO: Add other constraints...
     _sql_constraints = [
         ("positive_expected_price", "CHECK(expected_price > 0)", "Expected price must be positive."),
-        ("positive_selling_price", "CHECK(selling_price) > 0", "Selling price must be positive"),
+        ("positive_selling_price", "CHECK(selling_price > 0)", "Selling price must be positive"), ##TODO: Error, not able to add this constraint, check why
         ("positive_bedrooms", "CHECK(bedrooms > 0)", "The number of bedrooms must be positive"),
         ("positive_garden_area", "CHECK(garden_area >= 0)", "The garden area cannot be negative"),
-        ("positive_garden_area", "CHECK(living_area >= 0)", "The living area cannot be negative"),
+        ("positive_living_area", "CHECK(living_area >= 0)", "The living area cannot be negative"),
         ("date_availability_in_the_future", "CHECK(date_availability >= CURRENT_DATE)", "Date availability cannot be in the past."),
     ]
 
@@ -125,6 +126,32 @@ class EstateProperty(models.Model):
             property.validity = (property.date_deadline - fields.Date.today()).days
 
     #########################################################################################################
+    # Python constraints
+    #########################################################################################################
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_and_expected_price(self):
+        """ Check if the selling price is at least 90% of the expected price """
+        for property in self:
+            if property.selling_price == 0:
+                return
+            
+            diff = float_compare(
+                (property.expected_price * 0.9), 
+                property.selling_price, 
+                precision_digits=4
+            )
+
+            if diff == 1:
+                raise ValidationError(_("Selling price cannot be lower than 90% of the expected price."))
+
+    @api.constrains("expected_price")
+    def _check_expected_price_positive(self):
+        for property in self:
+            if property.expected_price < 0:
+                raise ValidationError(_("Expected price cannot be negative."))
+
+    #########################################################################################################
     # Onchange methods
     #########################################################################################################
 
@@ -136,16 +163,16 @@ class EstateProperty(models.Model):
                 property.garden_area = 0;
                 property.garden_orientation = None
 
-    @api.onchange("date_deadline")
-    def _onchange_date_deadline(self):
-        ##TODO: Implement check if the date is in the past
-        for property in self:
-            return {
-                "warning" : {
-                    "title" : _("Date in the past"),
-                    "message" : _("Date deadline cannot be in the past")
-                }
-            }
+    # @api.onchange("date_deadline")
+    # def _onchange_date_deadline(self):
+    #     ##TODO: Implement check if the date is in the past
+    #     for property in self:
+    #         return {
+    #             "warning" : {
+    #                 "title" : _("Date in the past"),
+    #                 "message" : _("Date deadline cannot be in the past")
+    #             }
+    #         }
         
     ##TODO: This would perform validation on frontend
     # @api.onchange("expected_price")
