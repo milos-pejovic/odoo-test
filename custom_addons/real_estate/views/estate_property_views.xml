@@ -43,12 +43,12 @@
                         <group>
                             <field name="expected_price" placeholder="Enter expected price"/>
                             <field name="best_offer"/>
-                            <field name="selling_price" placeholder="Enter selling name"/>
+                            <field name="selling_price" readonly="1"/>
                         </group>
                     </group>
 
                     <group>
-                        <notebook>
+                        <notebook class="o_notebook_bordered">
                             <page string="Description">
                                 <group>
                                     <field name="bedrooms" />
@@ -99,7 +99,6 @@
         <field name="name">real_estate.property.view.list</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
-        
             <list>
                 <field name="name"/>
                 <field name="status"/>
@@ -108,10 +107,9 @@
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="date_availability"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
+                <field name="selling_price" readonly="1"/>
                 <field name="property_type_id"/>
             </list>
-
         </field>
     </record>
 

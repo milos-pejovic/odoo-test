@@ -11,6 +11,20 @@
                             <field name="name" />
                         </h1>
                     </group>
+
+                    <group>
+                        <notebook class="o_notebook_bordered">
+                            <page string="Properties">
+                                <field name="property_ids">
+                                    <list>
+                                        <field name="name" />
+                                        <field name="expected_price" />
+                                        <field name="status" />
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
                 </sheet>
             </form>
         </field>

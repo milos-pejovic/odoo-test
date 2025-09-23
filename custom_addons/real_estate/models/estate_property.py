@@ -67,15 +67,15 @@ class EstateProperty(models.Model):
     #########################################################################################################
 
     property_type_id = fields.Many2one(comodel_name="real_estate.property_type", string="Type")
-    offer_ids = fields.One2many("real_estate.offer", "property_id")
+    offer_ids = fields.One2many(comodel_name="real_estate.offer", string="property_id", inverse_name="property_id")
     seller_id = fields.Many2one(
-        "res.users",
+        comodel_name="res.users",
         string="Seller",
         default=lambda self: self.env.user # The current user
     )
 
     buyer_id = fields.Many2one(
-        "real_estate.partner",
+        comodel_name="real_estate.partner",
         string="Buyer",
         copy=False
     )
