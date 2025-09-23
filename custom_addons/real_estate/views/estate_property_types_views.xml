@@ -7,16 +7,14 @@
             <form>
                 <sheet>
                     <group>
-                        <h1>
-                            <field name="name" />
-                        </h1>
+                        <h1><field name="name" /></h1>
                     </group>
 
                     <group>
                         <notebook class="o_notebook_bordered">
                             <page string="Properties">
                                 <field name="property_ids">
-                                    <list>
+                                    <list default_order="name">
                                         <field name="name" />
                                         <field name="expected_price" />
                                         <field name="status" />
@@ -37,6 +35,7 @@
         <field name="arch" type="xml">
         
             <list>
+                <field name="sequence" widget="handle" />
                 <field name="name"/>
             </list>
 
