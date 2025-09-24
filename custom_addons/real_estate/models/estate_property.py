@@ -71,28 +71,46 @@ class EstateProperty(models.Model):
     best_offer = fields.Float("Best offer", compute="_compute_best_offer")
     date_deadline = fields.Date("Date deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     number_of_offers = fields.Integer(compute="_compute_number_of_offers")
+    number_of_non_refused_offers = fields.Integer(compute="_compute_number_of_non_refused_offers", store=True)
 
     #########################################################################################################
     # Relational fields 
     #########################################################################################################
 
-    property_type_id = fields.Many2one(comodel_name="real_estate.property_type", string="Type")
-    offer_ids = fields.One2many(comodel_name="real_estate.offer", string="property_id", inverse_name="property_id")
+    property_type_id = fields.Many2one(
+        comodel_name="real_estate.property_type", 
+        string="Type"
+    )
+
+    offer_ids = fields.One2many(
+        comodel_name="real_estate.offer", 
+        string="property_id", 
+        inverse_name="property_id"
+    )
+
     seller_id = fields.Many2one(
         comodel_name="res.users",
         string="Seller",
         default=lambda self: self.env.user # The current user
     )
+
     buyer_id = fields.Many2one(
         comodel_name="real_estate.partner",
         string="Buyer",
         copy=False
     )
+
     tag_ids = fields.Many2many("real_estate.property_tag", "Tags")
 
     #########################################################################################################
     # Computed fields methods
     #########################################################################################################
+
+    @api.depends("offer_ids.status")
+    def _compute_number_of_non_refused_offers(self):
+        """ Get the number of offers that are not refused """
+        for property in self:
+            property.number_of_non_refused_offers = len([status for status in property.offer_ids.mapped("status") if not status in ("accepted", "refused")])
 
     @api.depends("offer_ids")
     def _compute_number_of_offers(self):

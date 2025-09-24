@@ -103,6 +103,7 @@
                 <field name="status"/>
                 <field name="create_date" optional="True" />
                 <field name="number_of_offers"/>
+                <field name="number_of_non_refused_offers" />
                 <field name="tag_ids" widget="many2many_tags" optional="True"/>
                 <field name="date_availability"/>
                 <field name="expected_price"/>
@@ -112,10 +113,39 @@
         </field>
     </record>
 
+    <record id="real_estate_proeprty_search_view" model="ir.ui.view">
+        <field name="name">real_estate.property.view.search</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="postcode" filter_domain="[('postcode', 'ilike', self)]" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="facades" />
+                <separator>
+                    <group string="Filter">
+                        <filter string="Available" name="available" domain="[('status', '!=', 'sold')]" />
+                        
+                        <!-- <filter string="New Properties" name="filter_new_properties" domain="[()]" /> -->
+                        <!-- Make a non-refused offers present fitler -->
+                        <!-- <filter string="Offer Received" name="filter_offer_received" domain="[]" /> -->
+                    </group>
+                </separator>
+                <separator>
+                    <group string="Other Filters">
+                        <filter string="Non refused offers" name="filter_non_refused_proeprties" domain="[('number_of_non_refused_offers', '>', '0')]" />
+                    </group>
+                </separator>
+            </search>
+        </field>
+    </record>
+
     <!-- Action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
         <field name="res_model">real_estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{"search_default_available" : True}</field>
     </record>
 </odoo>
