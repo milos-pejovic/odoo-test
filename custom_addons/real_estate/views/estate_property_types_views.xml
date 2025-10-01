@@ -1,6 +1,6 @@
 <odoo>
     <!-- Form view-->
-    <record id="real_estate_property_type_form_view" model="ir.ui.view">
+    <record id="real_estate_property_type_form_view_form" model="ir.ui.view">
         <field name="name">real_estate.property_type.view.form</field>
         <field name="model">real_estate.property_type</field>
         <field name="arch" type="xml">
@@ -29,7 +29,7 @@
     </record>
 
     <!-- List View -->
-    <record id="real_estate_property_type_list_view" model="ir.ui.view">
+    <record id="real_estate_property_type_list_view_list" model="ir.ui.view">
         <field name="name">real_estate.property_type.view.list</field>
         <field name="model">real_estate.property_type</field>
         <field name="arch" type="xml">

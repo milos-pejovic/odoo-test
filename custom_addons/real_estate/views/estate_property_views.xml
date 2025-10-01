@@ -1,8 +1,7 @@
 
 <odoo>
-
     <!-- Form view-->
-    <record id="real_estate_property_form_view" model="ir.ui.view">
+    <record id="real_estate_property_form_view_form" model="ir.ui.view">
         <field name="name">real_estate.property.view.form</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
@@ -94,7 +93,7 @@
     </record>
 
     <!-- List View -->
-    <record id="real_estate_property_tree_view" model="ir.ui.view">
+    <record id="real_estate_property_tree_view_list" model="ir.ui.view">
         <field name="name">real_estate.property.view.list</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
@@ -113,7 +112,8 @@
         </field>
     </record>
 
-    <record id="real_estate_proeprty_search_view" model="ir.ui.view">
+    <!-- Search view -->
+    <record id="real_estate_proeprty_search_view_search" model="ir.ui.view">
         <field name="name">real_estate.property.view.search</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
@@ -126,7 +126,7 @@
                 <separator>
                     <group string="Filter">
                         <filter string="Available" name="available" domain="[('status', '!=', 'sold')]" />
-                        
+                        <!-- ##TODO: finish -->
                         <!-- <filter string="New Properties" name="filter_new_properties" domain="[()]" /> -->
                         <!-- Make a non-refused offers present fitler -->
                         <!-- <filter string="Offer Received" name="filter_offer_received" domain="[]" /> -->

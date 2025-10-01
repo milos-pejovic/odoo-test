@@ -1,8 +1,7 @@
 
 <odoo>
-
     <!-- Form view-->
-    <record id="real_estate_buyer_form_view" model="ir.ui.view">
+    <record id="real_estate_buyer_form_view_form" model="ir.ui.view">
         <field name="name">res.partner.view.form</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
@@ -15,7 +14,7 @@
     </record>
 
     <!-- List View -->
-    <record id="real_estate_buyer_list_view" model="ir.ui.view">
+    <record id="real_estate_buyer_list_view_list" model="ir.ui.view">
         <field name="name">res.partner.view.list</field>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
