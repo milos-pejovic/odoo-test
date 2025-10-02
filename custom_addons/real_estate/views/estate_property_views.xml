@@ -69,12 +69,12 @@
 
                             <page string="Offers">
                                 <field name="offer_ids">
-                                    <list editable="bottom">
+                                    <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                         <field name="partner_id"/>
-                                        <field name="price" invisible="parent.status == 'sold'"/><!-- ##TODO: Don;t show if parent's status is "sold"  -->
-                                        <button icon="fa-check" title="Accept offer" type="object" name="action_accept" />
-                                        <button icon="fa-times" title="Refuse offer" type="object" name="action_refuse" /> 
-                                        <field name="status"/>
+                                        <field name="price" />
+                                        <button icon="fa-check" invisible="status in ['accepted', 'refused']" title="Accept offer" type="object" name="action_accept" />
+                                        <button icon="fa-times" invisible="status in ['accepted', 'refused']" title="Refuse offer" type="object" name="action_refuse" /> 
+                                        <field name="status" />
                                     </list>
                                 </field>
                             </page>
@@ -93,14 +93,14 @@
     </record>
 
     <!-- List View -->
-    <record id="real_estate_property_tree_view_list" model="ir.ui.view">
+    <record id="real_estate_property_view_list" model="ir.ui.view">
         <field name="name">real_estate.property.view.list</field>
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
             <list default_order="create_date desc, name">
                 <field name="name"/>
-                <field name="status"/>
-                <field name="create_date" optional="True" />
+                <!-- <field name="status"/> -->
+                <!-- <field name="create_date" /> -->
                 <field name="number_of_offers"/>
                 <field name="number_of_non_refused_offers" />
                 <field name="tag_ids" widget="many2many_tags" optional="True"/>
@@ -111,6 +111,32 @@
             </list>
         </field>
     </record>
+
+    <!-- List view that inherits -->
+    <record id="real_estate_property_view_list_inherit_1" model="ir.ui.view">
+        <field name="name">real_estate.property.view.list.inherit</field>
+        <field name="model">real_estate.property</field>
+        <field name="inherit_id" ref="real_estate_property_view_list" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="status" />
+            </xpath>
+        </field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- TODO: Double inheritance does not work, find out why -->
+    <!-- <record id="real_estate_property_view_list_inherit_2" model="ir.ui.view">
+        <field name="name">real_estate.property.view.list.inherit.2</field>
+        <field name="model">real_estate.property</field>
+        <field name="inherit_id" ref="real_estate_property_view_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='number_of_offers']" position="after">
+                <field name="create_date" />
+            </xpath>
+        </field>
+        <field name="sequence">20</field>
+    </record> -->
 
     <!-- Search view -->
     <record id="real_estate_proeprty_search_view_search" model="ir.ui.view">
@@ -127,15 +153,19 @@
                     <group string="Filter">
                         <filter string="Available" name="available" domain="[('status', '!=', 'sold')]" />
                         <!-- ##TODO: finish -->
-                        <!-- <filter string="New Properties" name="filter_new_properties" domain="[()]" /> -->
+                        
                         <!-- Make a non-refused offers present fitler -->
                         <!-- <filter string="Offer Received" name="filter_offer_received" domain="[]" /> -->
                     </group>
-                </separator>
-                <separator>
+                    <group>
+                        <filter string="Cottages" name="filter_cottages" domain="[('property_type_id.name', '=', 'Cottage')]" />
+                    </group>
                     <group string="Other Filters">
                         <filter string="Non refused offers" name="filter_non_refused_proeprties" domain="[('number_of_non_refused_offers', '>', '0')]" />
                     </group>
+                </separator>
+                <separator>
+                    <filter string="Houses" name="filter_houses" domain="[('property_type_id.name', '=', 'House')]" />
                 </separator>
             </search>
         </field>
@@ -146,6 +176,7 @@
         <field name="name">Real Estate</field>
         <field name="res_model">real_estate.property</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{"search_default_available" : True}</field>
+        <!-- <field name="view_id" ref="real_estate_property_view_list"/>  -->
+        <field name="context">{"search_default_available" : 1}</field>
     </record>
 </odoo>

@@ -3,7 +3,7 @@ from odoo import fields, models
 
 class PropertyTag(models.Model):
     _name = "real_estate.property_tag"
-    _description = "Proeprty tag"
+    _description = "Property tag"
     _order = "name"
     _sql_constraints = [
         ("unique_tag_name", "UNIQUE(name)", "Tag name must be unique")

@@ -15,7 +15,6 @@ class EstateProperty(models.Model):
         ("positive_bedrooms", "CHECK(bedrooms > 0)", "The number of bedrooms must be positive"),
         ("positive_garden_area", "CHECK(garden_area >= 0)", "The garden area cannot be negative"),
         ("positive_living_area", "CHECK(living_area >= 0)", "The living area cannot be negative"),
-        ("date_availability_in_the_future", "CHECK(date_availability >= CURRENT_DATE)", "Date availability cannot be in the past."),
     ]
 
     # These attributes are availiable to all field types:
@@ -34,10 +33,10 @@ class EstateProperty(models.Model):
     name = fields.Char("Property name", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Post code")
-    date_availability = fields.Date("Date availability")
-    expected_price = fields.Float("Expected price", required=True)
+    date_availability = fields.Date("Date availability", help="Until when the property is available")
+    expected_price = fields.Float("Expected price", required=True, default=0)
     selling_price = fields.Float("Selling price")
-    bedrooms = fields.Integer("Bedrooms")
+    bedrooms = fields.Integer("Bedrooms", help="The number of bedrooms")
     living_area = fields.Integer("Living area")
     facades = fields.Integer("Facades", invisible=True) #TODO: Confirm: Hide in forms?
     garage = fields.Boolean("Garage", default=False)
@@ -57,7 +56,7 @@ class EstateProperty(models.Model):
         [
             ("active", "Active"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled")   
+            ("cancelled", "Cancelled")
         ],
         copy=False,
         default="active"
@@ -67,7 +66,7 @@ class EstateProperty(models.Model):
     # Computed fields
     #########################################################################################################
 
-    total_area = fields.Integer("Total area (sqm)", compute="_compute_total_area")
+    total_area = fields.Integer("Total area (sqm)", compute="_compute_total_area", help="Sum of living and garden area")
     best_offer = fields.Float("Best offer", compute="_compute_best_offer")
     date_deadline = fields.Date("Date deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     number_of_offers = fields.Integer(compute="_compute_number_of_offers")
@@ -84,7 +83,7 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many(
         comodel_name="real_estate.offer", 
-        string="property_id", 
+        string="Property", 
         inverse_name="property_id"
     )
 
@@ -124,6 +123,7 @@ class EstateProperty(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
+        """ Get the price of the best offer that is not refused """
         for property in self:
             if property.offer_ids:
                 offer_prices = [offer.price for offer in property.offer_ids if offer.status != "refused"]
@@ -167,7 +167,7 @@ class EstateProperty(models.Model):
     def _check_expected_price_positive(self):
         for property in self:
             if property.expected_price < 0:
-                raise ValidationError(_("Expected price cannot be negative."))
+                raise ValidationError(_("[Python constraint] Expected price cannot be negative."))
 
     #########################################################################################################
     # Onchange methods
@@ -192,21 +192,21 @@ class EstateProperty(models.Model):
     #             }
     #         }
         
-    ##TODO: This would perform validation on frontend
-    # @api.onchange("expected_price")
-    # def _onchange_expected_price(self):
-    #     ##TODO: Find out how to validate this field so that it must be positive
-    #     for property in self:
-    #         if property.expected_price < 0:
-    #             property.expected_price = abs(property.expected_price)
-    #             return {
-    #                 "warning" : {
-    #                     "title" : _("Negative value"),
-    #                     "message" : _("Expected price cannot be negative")
-    #                 }
-    #             }
+    #TODO: This would perform validation on frontend via AJAX
+    @api.onchange("expected_price")
+    def _onchange_expected_price(self):
+        ##TODO: Find out how to validate this field so that it must be positive
+        for property in self:
+            if property.expected_price < 0:
+                property.expected_price = abs(property.expected_price)
+                return {
+                    "warning" : {
+                        "title" : _("Negative value"),
+                        "message" : _("[on_change method] Expected price cannot be negative")
+                    }
+                }
 
-    ##TODO: This would perform validation on frontend 
+    ##TODO: This would perform validation on frontend via AJAX 
     # @api.onchange("selling_price")
     # def _onchange_selling_price(self):
     #     ##TODO: Find out how to validate this field so that it must be positive
@@ -220,7 +220,7 @@ class EstateProperty(models.Model):
     #                 }
     #             }
     
-    ##TODO: This would perform validation on frontend 
+    ##TODO: This would perform validation on frontend via AJAX 
     # @api.onchange("garden_area")
     # def _onchange_garden_area(self):
     #     ##TODO: This forces the value of gardern area to be 0 if garden is False, but still the field is not readonly
@@ -244,7 +244,7 @@ class EstateProperty(models.Model):
                 return {
                     "warning" : {
                         "title" : _("Negative value"),
-                        "message" : _("Lviiving area cannot be negative")
+                        "message" : _("Living area cannot be negative")
                     }
                 }
 
