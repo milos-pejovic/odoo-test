@@ -2,6 +2,10 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
 from odoo.tools.float_utils import float_compare
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 class EstateProperty(models.Model):
     _name = "real_estate.property"
@@ -54,7 +58,8 @@ class EstateProperty(models.Model):
     validity = fields.Integer("Validity (days)", default=7)
     status = fields.Selection(string="Status",selection=
         [
-            ("active", "Active"),
+            ("new", "New"),
+            ("offer_received", "Offer received"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
@@ -78,13 +83,15 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one(
         comodel_name="real_estate.property_type", 
-        string="Type"
+        string="Type",
+        ondelete="set null"
     )
 
     offer_ids = fields.One2many(
         comodel_name="real_estate.offer", 
         string="Property", 
-        inverse_name="property_id"
+        inverse_name="property_id",
+        ondelete="set null"
     )
 
     seller_id = fields.Many2one(
@@ -181,7 +188,7 @@ class EstateProperty(models.Model):
                 property.garden_area = 0;
                 property.garden_orientation = None
 
-    # @api.onchange("date_deadline")
+    # @api.onchange("date_deadline")o must 
     # def _onchange_date_deadline(self):
     #     ##TODO: Implement check if the date is in the past
     #     for property in self:
@@ -272,3 +279,14 @@ class EstateProperty(models.Model):
                 raise UserError(_("Cannot sell a property that has been cancelled."))
             property.status = "sold"
         return True
+
+    #########################################################################################################
+    # CRUD
+    #########################################################################################################
+
+    def unlink(self):
+        for property_record in self:
+            if property_record.status == 'sold':
+                _logger.info(f"Record {property_record.id} cannot be deleted due to status: {property_record.status}")
+                raise UserError("Cannot delete a sold proeprty")
+        return super().unlink()

@@ -98,14 +98,14 @@
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
             <list default_order="create_date desc, name">
-                <field name="name"/>
+                <field name="name" class="oe_inline o_list_char_width"/>
                 <!-- <field name="status"/> -->
                 <!-- <field name="create_date" /> -->
-                <field name="number_of_offers"/>
-                <field name="number_of_non_refused_offers" />
-                <field name="tag_ids" widget="many2many_tags" optional="True"/>
+                <field name="number_of_offers" string="Offers" class="oe_number o_list_number_width"/>
+                <field name="number_of_non_refused_offers" class="oe_number o_list_number_width"/>
+                <field name="tag_ids" widget="many2many_tags" optional="True" class="o_list_many2one_width"/>
                 <field name="date_availability"/>
-                <field name="expected_price"/>
+                <field name="expected_price" />
                 <field name="selling_price" readonly="1"/>
                 <field name="property_type_id"/>
             </list>
@@ -122,7 +122,6 @@
                 <field name="status" />
             </xpath>
         </field>
-        <field name="sequence">10</field>
     </record>
 
     <!-- TODO: Double inheritance does not work, find out why -->
@@ -144,8 +143,10 @@
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
             <search>
+                <field name="id" />
                 <field name="name" filter_domain="[('name', 'ilike', self)]"/>
                 <field name="postcode" filter_domain="[('postcode', 'ilike', self)]" />
+                <field name="status" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="facades" />

@@ -27,6 +27,7 @@ class Dev(models.TransientModel):
         self.env["real_estate.offer"].search([]).unlink()
         self.env["real_estate.partner"].search([]).unlink()
         self.env["real_estate.property_type"].search([]).unlink()
+        self.prepare_properties_for_deletion()
         self.env["real_estate.property"].search([]).unlink()
         ##TODO: What happens to property_tags junction table when these are unlinked/deleted ^?
 
@@ -35,6 +36,15 @@ class Dev(models.TransientModel):
         self.seed_types()
         self.seed_properties()
         self.seed_offers()
+
+    def prepare_properties_for_deletion(self):
+        """ 
+        There is a delete CRUD override in  properies that prevents deletion if a propert has status "offer_received" 
+        We have to change the statuses of all proeprties before deleting them.
+        """
+
+        properties = self.env['real_estate.property'].search([])
+        properties.status = 'new'
 
     def seed_offers(self):
         properties = self.env["real_estate.property"].search([])
@@ -88,7 +98,7 @@ class Dev(models.TransientModel):
                 "garden_area" : garden_area,
                 "garden_orientation" : garden_orientation,
                 "validity" : random.randint(1,20),
-                "status" : "active",
+                "status" : "new",
                 "seller_id" : random.choice(users).id,
                 "buyer_id" : None,
                 "tag_ids" : random_tag_ids
