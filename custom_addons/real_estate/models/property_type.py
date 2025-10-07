@@ -5,11 +5,12 @@ _logger = logging.getLogger(__name__)
 
 class PropertyType(models.Model):
     _name = "real_estate.property_type"
+    _inherit="real_estate.mixin"
     _description = "Real estate property type"
     _order = "sequence"
     _sql_constraints = [("unique_type_name", "UNIQUE(name)", "Property type name must be unique")]
 
-    name = fields.Char(string="Name", required=True)
+    # name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many(
         comodel_name="real_estate.property", 
         inverse_name="property_type_id", 

@@ -38,7 +38,7 @@ class EstateProperty(models.Model):
     description = fields.Text("Description")
     postcode = fields.Char("Post code")
     date_availability = fields.Date("Date availability", help="Until when the property is available")
-    expected_price = fields.Float("Expected price", required=True, default=0)
+    expected_price = fields.Float("Expected price", required=True, default=0, currency_field="currency_id")
     selling_price = fields.Float("Selling price")
     bedrooms = fields.Integer("Bedrooms", help="The number of bedrooms")
     living_area = fields.Integer("Living area")
@@ -64,7 +64,7 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled")
         ],
         copy=False,
-        default="active"
+        default="new"
     )
 
     #########################################################################################################
@@ -89,7 +89,7 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many(
         comodel_name="real_estate.offer", 
-        string="Property", 
+        string="Offers", 
         inverse_name="property_id",
         ondelete="set null"
     )
@@ -115,6 +115,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.status")
     def _compute_number_of_non_refused_offers(self):
         """ Get the number of offers that are not refused """
+        
         for property in self:
             property.number_of_non_refused_offers = len([status for status in property.offer_ids.mapped("status") if not status in ("accepted", "refused")])
 
@@ -131,6 +132,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         """ Get the price of the best offer that is not refused """
+
         for property in self:
             if property.offer_ids:
                 offer_prices = [offer.price for offer in property.offer_ids if offer.status != "refused"]
@@ -157,6 +159,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_and_expected_price(self):
         """ Check if the selling price is at least 90% of the expected price """
+
         for property in self:
             if property.selling_price == 0:
                 return

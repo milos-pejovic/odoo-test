@@ -9,16 +9,23 @@ class Dev(models.TransientModel):
 
     seeding_data = {
         "properties" : 100,
-        "partners" : 10,
+        "partners" : 12,
         "offers_per_partner" : 5,
         "tags_to_create" : ["Modern", "New", "Renovated", "Luxurious", "Suburbs", "Centre", "By the sea", "Popular", "Limited time"],
-        "property_types" : ["Flat", "House", "Cottage", "Duplex"]
+        "property_types" : ["Flat", "House", "Cottage", "Duplex", "Terraced house", "Studio", "Villa"]
     }
 
-    first_names = ["James", "Sam", "John", "Ian", "Ann", "Peter", "Susan", "Liam", "Gunnar"]
-    last_names  = ["Johnson", "Samson", "Connor", "Peterson", "Li", "Gunnarson"]
+    male_first_names = male_names = ["Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Alexander", "Ethan", "Michael", "Daniel", "Logan", "Jackson", "Sebastian", "Jack", "Owen", "Samuel", "Levi"]
+
+    female_first_names = ["Rebecca", "Ann", "Susan", "Samantha", "Marianne", "Charlotte", "Ellen", "Emma", "Olivia", "Ava", "Sophia", "Isabella", "Mia", "Amelia", "Harper", "Evelyn", "Abigail", "Ella", "Charlotte", "Scarlett", "Grace", "Lily", "Chloe", "Aria", "Hannah", "Zoe", "Nora"]
+
+    first_names = male_first_names + female_first_names
+    last_names  = last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"]
+
     cities = ["London", "New York", "Hamburg", "Paris", "Berlin", "Madrid","Rome", "Amsterdam", "Lisbon", "Vienna", "Prague", "Budapest", "Warsaw",]
     orientations = ["north", "south", "east", "west"]
+
+    adjectives = ["cosy", "renovated", "bright", "scenic", "exclusive", "spacious", "luxurious"]
 
     def seed(self):
         print("SEEDING THE DATABASE")
@@ -39,7 +46,7 @@ class Dev(models.TransientModel):
 
     def prepare_properties_for_deletion(self):
         """ 
-        There is a delete CRUD override in  properies that prevents deletion if a propert has status "offer_received" 
+        There is a delete CRUD override in properies that prevents deletion if a propert has status "offer_received" 
         We have to change the statuses of all proeprties before deleting them.
         """
 
@@ -51,7 +58,7 @@ class Dev(models.TransientModel):
         partners = self.env["real_estate.partner"].search([])
 
         for property in properties:
-            if random.randint(1, 10) > 3: # Whether to create offers for this property or not
+            if random.randint(1, 10) > 7: # Whether to create offers for this property or not
                 number_of_offers = random.randint(1, 10)
                 offer_values = []
                 for i in range(number_of_offers):
@@ -74,7 +81,6 @@ class Dev(models.TransientModel):
         for i in range(self.seeding_data["properties"]):
             property_type = random.choice(property_types)
             city = random.choice(self.cities)
-            name = f"{property_type.name} in {city}"
             garden = random.randint(0,1)
             garden_area = random.randint(100, 1000) if garden else 0
             garden_orientation = random.choice(self.orientations) if garden else None;
@@ -82,7 +88,7 @@ class Dev(models.TransientModel):
             random_tag_ids = random.sample(all_tag_ids, min(num_tags, len(all_tag_ids)))
             
             property_values.append({
-                "name" : name,
+                "name" : self.create_name(property_type.name, city),
                 "property_type_id" : property_type.id,
                 "description" : f"Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet. Lorem ipsum sit dollor amet.",
                 "postcode" : 12345, ##TODO
@@ -130,4 +136,15 @@ class Dev(models.TransientModel):
                 "name" : type
             })
         self.env["real_estate.property_type"].create(type_values)
+    
+    def create_name(self, property_type: str, city: str):
+        name = ""
+        if random.randint(1, 10) > 2:
+            # adjs = random.choices(self.adjectives, k=random.randint(1, 1))
+            adj = random.choice(self.adjectives)
+            name = adj.capitalize() + " "
+
+        name += f"{property_type.lower()} in {city}" 
+        name = name[0].upper() + name[1:]
+        return name
     
