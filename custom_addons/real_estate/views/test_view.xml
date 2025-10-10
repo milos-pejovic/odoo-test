@@ -1,0 +1,5 @@
+<odoo>
+    <template id="test_view" name="Test view">
+        <h1>TEST 2</h1>
+    </template>
+</odoo>

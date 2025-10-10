@@ -1,0 +1,49 @@
+<odoo>
+  <template id="property_inquiry_form" name="Property Inquiry Form">
+    <t t-call="website.layout">
+      <div class="container mt-5">
+        <h2>Contact Us About This Property</h2>
+
+        <t t-if="errors">
+          <div class="alert alert-danger">
+            <ul>
+              <t t-foreach="errors" t-as="error">
+                <li><t t-esc="error" /></li>
+              </t>
+            </ul>
+          </div>
+        </t>
+
+        <form action="/property/inquiry/submit" method="POST">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input name="name" type="text" t-att-value="values.get('name') if values else ''" class="form-control" required="true"/>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input name="email" type="email" t-att-value="values.get('email') if values else ''" class="form-control" required="true"/>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea name="message" class="form-control" rows="4" required="true"><t t-esc="values.get('safe_message') if values else ''"/></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </t>
+  </template>
+
+  <!-- Success page -->
+  <template id="property_inquiry_thanks" name="Inquiry Success Page">
+    <t t-call="website.layout">
+      <div class="container mt-5 text-center">
+        <h2>Thank you!</h2>
+        <p>Your inquiry has been received. We will contact you soon.</p>
+        <a href="/" class="btn btn-secondary">Back to Home</a>
+      </div>
+    </t>
+  </template>
+</odoo>

@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "depends": ["base"],
+    "depends": ["base", "website", "base"],
     "author": "Milos Pejovic",
     "category": "Category",
     "description": """
@@ -20,6 +20,8 @@
         "views/estate_property_tag.xml",
         "views/estate_development.xml",
         "views/res_users.xml",
+        "views/property_inquiry_form.xml",
+        "views/test_view.xml",
 
         # Then the menu that references it
         "views/estate_menus.xml",

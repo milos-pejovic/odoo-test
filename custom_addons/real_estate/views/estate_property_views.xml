@@ -20,7 +20,7 @@
                 <sheet>
                     <group>
                         <h1>
-                            <field name="name" placeholder="Enter property name"/>
+                            <field name="name" placeholder="Enter property name" />
                         </h1>
                     </group>
 
@@ -99,7 +99,7 @@
         <field name="model">real_estate.property</field>
         <field name="arch" type="xml">
             <list default_order="create_date desc">
-                <field name="name" />
+                <field name="name"/>
 
                 <!-- <field name="status"/> -->
                 <!-- <field name="create_date" /> -->
@@ -174,11 +174,97 @@
         </field>
     </record>
 
+    <record id="real_estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">real_estate.property.view.kanban</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+
+            <kanban 
+                string="Properties Kanban"
+                default_group_by="property_type_id"
+                default_order="status desc"
+                records_draggable="0"
+            >
+                 <progressbar 
+                    field="status"
+                    colors='{"offer_received": "success", "new": "muted", "sold": "danger"}'
+                    sum_field="STATA" />
+
+                <!-- <header>
+                    <button name="toDoAlways" type="object" string="Always displayed" class="btn btn-sm" display="always"/>
+                    <button name="toDoSelection" type="object" string="Displayed if selection" class="btn btn-sm"/>
+                </header> -->
+
+                <field name="offer_ids" /><!-- Declaration of a used field -->
+
+                <templates>                    
+                    <t t-name="kanban-box">
+                        <div>
+                            <!-- <strong><field name="name"/></strong>
+                            <div><field name="status" widget="badge" /></div>
+                            <div><field name="property_type_id"/></div> -->
+                            <t t-name="card">
+                                <t t-set="my_var" t-value="'TEST'" /><!-- Wrap string literals in '' -->
+                                <div class="mt-1">
+                                    <h3><field name="name"/></h3>
+                                </div>
+
+                                <!-- <div class="mt-1"> -->
+                                    <!-- <p t-esc="my_var"></p>t-set has to be in the same scope -->
+                                <!-- </div> -->
+
+                                <!-- <t t-debug="Test debugger" /> -->
+                                <!-- <t t-log="record.status.raw_value" />Uses console.log to log -->
+                                
+
+                                <div class="mt-1">
+                                    <field t-if="record.status.raw_value == 'new'" name="status" style="border-radius: 10px; padding: 2px 6px; background-color: lightgreen"/>
+                                    <field t-elif="record.status.raw_value == 'offer_received'" name="status" style="border-radius: 10px; padding: 2px 6px; background-color: #fbff94"/>
+                                    <field t-elif="record.status.raw_value == 'sold'" name="status" style="border-radius: 10px; padding: 2px 6px; background-color: #ffb3b3"/>
+                                    <field t-else="" name="status" style="border-radius: 10px; padding: 2px 6px; background-color: lightgreen"/>
+                                </div>
+
+                                <div class="mt-1">
+                                    <span class="fw-bold">Type: </span>
+                                    <field name="property_type_id"/>
+                                </div>
+
+                                <div t-if="record.status.raw_value == 'sold'" class="mt-1">
+                                    <span class="fw-bold">Selling price: </span>
+                                    <field name="selling_price"/>
+                                </div>
+
+                                <div t-if="record.status.raw_value == 'offer_received'">
+                                    <span class="fw-bold">Best offer: </span>
+                                    <field name="best_offer" />
+                                </div>
+
+                                <!-- This does not work since it only holds offer IDs -->
+                                <!-- <t t-if="record.offer_ids">
+                                    <t t-foreach="record.offer_ids.raw_value" t-as="offer">
+                                        <p t-out="offer" />
+                                    </t>
+                                </t> -->
+
+                            </t>
+
+                            <!-- <footer>
+                                <button name="toDoAlways" type="object" string="Always displayed" class="btn btn-sm"/>
+                                <button name="toDoSelection" type="object" string="Displayed if selection" class="btn btn-sm"/>
+                            </footer> -->
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+
+        </field>
+    </record>
+
     <!-- Action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
         <field name="res_model">real_estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <!-- <field name="view_id" ref="real_estate_property_view_list"/>  -->
         <field name="context">{"search_default_available" : 1}</field>
     </record>
