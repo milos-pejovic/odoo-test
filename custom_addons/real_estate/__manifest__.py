@@ -22,6 +22,7 @@
         "views/res_users.xml",
         "views/property_inquiry_form.xml",
         "views/test_view.xml",
+        "views/property_sales_report_views.xml",
 
         # Then the menu that references it
         "views/estate_menus.xml",

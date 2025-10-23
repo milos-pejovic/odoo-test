@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
     ##TODO: Add other constraints...
     _sql_constraints = [
         ("positive_expected_price", "CHECK(expected_price > 0)", "Expected price must be positive."),
-        ("positive_selling_price", "CHECK(selling_price > 0)", "Selling price must be positive"), ##TODO: Error, not able to add this constraint, check why
+        ("positive_selling_price", "CHECK(selling_price IS NULL OR selling_price >= 0)", "Selling price must be positive"), ##TODO: Error, not able to add this constraint, check why
         ("positive_bedrooms", "CHECK(bedrooms > 0)", "The number of bedrooms must be positive"),
         ("positive_garden_area", "CHECK(garden_area >= 0)", "The garden area cannot be negative"),
         ("positive_living_area", "CHECK(living_area >= 0)", "The living area cannot be negative"),
@@ -38,7 +38,7 @@ class EstateProperty(models.Model):
     description = fields.Text("Description")
     postcode = fields.Char("Post code")
     date_availability = fields.Date("Date availability", help="Until when the property is available")
-    expected_price = fields.Float("Expected price", required=True, default=0, currency_field="currency_id")
+    expected_price = fields.Float("Expected price", required=True, default=0)
     selling_price = fields.Float("Selling price")
     bedrooms = fields.Integer("Bedrooms", help="The number of bedrooms")
     living_area = fields.Integer("Living area")
@@ -55,7 +55,9 @@ class EstateProperty(models.Model):
         ],
         copy=False # If this record is duplicated, this field will not be duplicated
     )
+
     validity = fields.Integer("Validity (days)", default=7)
+    
     status = fields.Selection(string="Status",selection=
         [
             ("new", "New"),
@@ -73,7 +75,9 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer("Total area (sqm)", compute="_compute_total_area", help="Sum of living and garden area")
     best_offer = fields.Float("Best offer", compute="_compute_best_offer")
+
     date_deadline = fields.Date("Date deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+
     number_of_offers = fields.Integer(compute="_compute_number_of_offers")
     number_of_non_refused_offers = fields.Integer(compute="_compute_number_of_non_refused_offers", store=True)
 
@@ -91,7 +95,6 @@ class EstateProperty(models.Model):
         comodel_name="real_estate.offer", 
         string="Offers", 
         inverse_name="property_id",
-        ondelete="set null"
     )
 
     seller_id = fields.Many2one(
@@ -106,7 +109,10 @@ class EstateProperty(models.Model):
         copy=False
     )
 
-    tag_ids = fields.Many2many("real_estate.property_tag", "Tags")
+    tag_ids = fields.Many2many(
+        string="Tags",
+        comodel_name="real_estate.property_tag"
+    )
 
     #########################################################################################################
     # Computed fields methods
@@ -115,7 +121,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.status")
     def _compute_number_of_non_refused_offers(self):
         """ Get the number of offers that are not refused """
-        
+     
         for property in self:
             property.number_of_non_refused_offers = len([status for status in property.offer_ids.mapped("status") if not status in ("accepted", "refused")])
 
@@ -134,15 +140,13 @@ class EstateProperty(models.Model):
         """ Get the price of the best offer that is not refused """
 
         for property in self:
+            best_offer = 0
             if property.offer_ids:
                 offer_prices = [offer.price for offer in property.offer_ids if offer.status != "refused"]
                 if len(offer_prices) > 0:
-                    property.best_offer = max(offer_prices)
-                else:
-                    property.best_offer = 0    
-            else:
-                property.best_offer = 0
-
+                    best_offer = max(offer_prices)
+            property.best_offer = best_offer
+            
     @api.depends("validity")
     def _compute_date_deadline(self):
         for property in self:

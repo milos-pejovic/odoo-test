@@ -1,28 +1,40 @@
 <odoo>
-    <menuitem id="root_level_1" name="Real Estate">
-        <menuitem id="second_level_1" name="Advertiesements">
-            <menuitem id="third_level_1" name="Third" action="estate_property_action" />
-        </menuitem>
+    <menuitem id="root_real_estate" name="Real Estate"/>
 
-        <menuitem id="second_level_2" name="Settings">
-            <menuitem id="third_level_2" name="Property types" action="estate_property_type_action" />
-            <menuitem id="third_level_property_tags" name="Property tags" action="estate_property_tag_action" />
-        </menuitem>
 
-        <menuitem id="second_level_3" name="Offers">
-            <menuitem id="third_level_3" name="Offers" action="estate_offer_action" />
-        </menuitem>
+    <menuitem id="menu_advertisements" name="Advertisements" parent="root_real_estate">
+        <menuitem id="menu_third_level_ads" name="Third" action="estate_property_action"/>
+    </menuitem>
 
-        <menuitem id="second_level_4" name="Partners">
-            <menuitem id="third_level_4" name="Partners" action="estate_partner_action" />
-        </menuitem>
 
-        <menuitem id="second_level_5" name="Buyers">
-            <menuitem id="third_level_5" name="Buyers" action="estate_buyers_action" />
-        </menuitem>
+    <menuitem id="menu_settings" name="Settings" parent="root_real_estate">
+        <menuitem id="menu_property_types" name="Property Types" action="estate_property_type_action"/>
+        <menuitem id="menu_property_tags" name="Property Tags" action="estate_property_tag_action"/>
+    </menuitem>
 
-        <menuitem id="second_level_6" name="(Development)" >
-            <menuitem id="third_level_6" name="Seed the database" action="action_my_server" />
-        </menuitem>
+
+    <menuitem id="menu_offers" name="Offers" parent="root_real_estate">
+        <menuitem id="menu_offers_list" name="Offers" action="estate_offer_action"/>
+    </menuitem>
+
+
+    <menuitem id="menu_partners" name="Partners" parent="root_real_estate">
+        <menuitem id="menu_partners_list" name="Partners" action="estate_partner_action"/>
+    </menuitem>
+
+
+    <menuitem id="menu_buyers" name="Buyers" parent="root_real_estate">
+        <menuitem id="menu_buyers_list" name="Buyers" action="estate_buyers_action"/>
+    </menuitem>
+
+
+    <menuitem id="menu_reports" name="Reports" parent="root_real_estate" />
+    <menuitem id="menu_property_sales_report"
+              name="Property Sales Report"
+              parent="menu_reports"
+              action="action_property_sales_report"/>
+
+    <menuitem id="menu_development" name="(Development)" parent="root_real_estate">
+        <menuitem id="menu_seed_db" name="Seed the database" action="action_my_server"/>
     </menuitem>
 </odoo>

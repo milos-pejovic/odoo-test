@@ -8,19 +8,19 @@ class Dev(models.TransientModel):
     _description = "Used for development functionalities"
 
     seeding_data = {
-        "properties" : 100,
+        "properties" : 200,
         "partners" : 12,
         "offers_per_partner" : 5,
         "tags_to_create" : ["Modern", "New", "Renovated", "Luxurious", "Suburbs", "Centre", "By the sea", "Popular", "Limited time"],
         "property_types" : ["Flat", "House", "Cottage", "Duplex", "Terraced house", "Studio", "Villa"]
     }
 
-    male_first_names = male_names = ["Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Alexander", "Ethan", "Michael", "Daniel", "Logan", "Jackson", "Sebastian", "Jack", "Owen", "Samuel", "Levi"]
+    male_first_names = ["Liam", "Noah", "Oliver", "Elijah", "James", "William", "Benjamin", "Lucas", "Henry", "Alexander", "Ethan", "Michael", "Daniel", "Logan", "Jackson", "Sebastian", "Jack", "Owen", "Samuel", "Levi"]
 
     female_first_names = ["Rebecca", "Ann", "Susan", "Samantha", "Marianne", "Charlotte", "Ellen", "Emma", "Olivia", "Ava", "Sophia", "Isabella", "Mia", "Amelia", "Harper", "Evelyn", "Abigail", "Ella", "Charlotte", "Scarlett", "Grace", "Lily", "Chloe", "Aria", "Hannah", "Zoe", "Nora"]
 
     first_names = male_first_names + female_first_names
-    last_names  = last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"]
+    last_names = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin"]
 
     cities = ["London", "New York", "Hamburg", "Paris", "Berlin", "Madrid","Rome", "Amsterdam", "Lisbon", "Vienna", "Prague", "Budapest", "Warsaw",]
     orientations = ["north", "south", "east", "west"]
@@ -28,7 +28,9 @@ class Dev(models.TransientModel):
     adjectives = ["cosy", "renovated", "bright", "scenic", "exclusive", "spacious", "luxurious"]
 
     def seed(self):
+        print("*****************************************************************************************************")
         print("SEEDING THE DATABASE")
+        print("*****************************************************************************************************")
 
         self.env["real_estate.property_tag"].search([]).unlink()
         self.env["real_estate.offer"].search([]).unlink()
@@ -84,8 +86,7 @@ class Dev(models.TransientModel):
             garden = random.randint(0,1)
             garden_area = random.randint(100, 1000) if garden else 0
             garden_orientation = random.choice(self.orientations) if garden else None;
-            num_tags = random.randint(1, len(all_tag_ids))
-            random_tag_ids = random.sample(all_tag_ids, min(num_tags, len(all_tag_ids)))
+            random_tag_ids = random.sample(all_tag_ids, random.randint(1, 5))
             
             property_values.append({
                 "name" : self.create_name(property_type.name, city),

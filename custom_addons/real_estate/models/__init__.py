@@ -7,3 +7,4 @@ from . import estate_tag
 from . import estate_offer_extension
 from . import dev
 from . import res_user_extension
+from . import property_sales_report

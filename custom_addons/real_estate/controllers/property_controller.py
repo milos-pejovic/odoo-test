@@ -34,7 +34,7 @@ class PropertyController(http.Controller):
         })
 
     # @http.route("/test", methods=["GET"], type="http", auth="public", website=True)
-    @http.route("/test", methods=["GET"], type="http", auth="public", website=True)
+    @http.route("/test_2", type="http", auth="public", website=True)
     def test(self, **kwargs):
         return request.render("real_estate.test_view", {})
     
