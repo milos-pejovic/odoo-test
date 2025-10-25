@@ -1,0 +1,43 @@
+<odoo>
+    <!-- Views -->
+    <record id="view_property_seller_report_list" model="ir.ui.view">
+        <field name="name">real_estate.property_seller_report.list</field>
+        <field name="model">real_estate.property_seller_report</field>
+        <field name="arch" type="xml">
+            <list string="Property Seller Report" default_order="seller_id, order_of_selling">
+                <field name="seller_id" width="100" />
+                <field name="name" width="200" />
+                <field name="date_sold" width="150" />
+                <field name="order_of_selling" width="100" />
+                <field name="selling_price" width="130" />
+                <field name="running_total" width="130" />
+                <field name="running_average" width="130" />
+                <field name="running_lowest" width="130" />
+                <field name="running_highest" width="130" />
+            </list>
+        </field>
+    </record>
+
+     <!-- Search View -->
+    <record id="view_property_seller_report_search" model="ir.ui.view">
+        <field name="name">real_estate.property_seller_report.search</field>
+        <field name="model">real_estate.property_seller_report</field>
+        <field name="arch" type="xml">
+            <search string="Property Seller Report">
+                <field name="seller_id"/>
+                <field name="name"/>
+                <filter name="filter_by_seller_name" string="Seller Name" domain="[]" context="{}"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_property_seller_report" model="ir.actions.act_window">
+        <field name="name">Property Seller Report</field>
+        <field name="res_model">real_estate.property_seller_report</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_property_seller_report_list"/>
+        <field name="search_view_id" ref="view_property_seller_report_search"/>
+        <field name="target">current</field>
+    </record>
+</odoo>

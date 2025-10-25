@@ -1,5 +1,5 @@
 from odoo import models, api
-import random
+import random, time
 from datetime import datetime, timedelta
 
 
@@ -8,9 +8,10 @@ class Dev(models.TransientModel):
     _description = "Used for development functionalities"
 
     seeding_data = {
-        "properties" : 200,
+        "properties" : 300,
         "partners" : 12,
         "offers_per_partner" : 5,
+        "offer_price" : None, # None for random, Int for fixed
         "tags_to_create" : ["Modern", "New", "Renovated", "Luxurious", "Suburbs", "Centre", "By the sea", "Popular", "Limited time"],
         "property_types" : ["Flat", "House", "Cottage", "Duplex", "Terraced house", "Studio", "Villa"]
     }
@@ -46,10 +47,12 @@ class Dev(models.TransientModel):
         self.seed_properties()
         self.seed_offers()
 
+        self.sell_properties_and_reject_offers()
+
     def prepare_properties_for_deletion(self):
         """ 
-        There is a delete CRUD override in properies that prevents deletion if a propert has status "offer_received" 
-        We have to change the statuses of all proeprties before deleting them.
+        There is a delete CRUD override in properies that prevents deletion if a property has status "offer_received" 
+        We have to change the statuses of all properties before deleting them.
         """
 
         properties = self.env['real_estate.property'].search([])
@@ -60,13 +63,14 @@ class Dev(models.TransientModel):
         partners = self.env["real_estate.partner"].search([])
 
         for property in properties:
-            if random.randint(1, 10) > 7: # Whether to create offers for this property or not
+            if random.randint(1, 10) > 3: # Whether to create offers for this property or not
                 number_of_offers = random.randint(1, 10)
                 offer_values = []
                 for i in range(number_of_offers):
+                    price = self.seeding_data["offer_price"] if self.seeding_data["offer_price"] else property.expected_price * (random.randint(9, 13) / 10)
                     offer_values.append({
                         "status" : None,
-                        "price" : property.expected_price * (random.randint(7, 13) / 10),
+                        "price" : price,
                         "partner_id" : random.choice(partners).id,
                         "property_id" : property.id,
                         "type_id" : property.property_type_id.id
@@ -148,4 +152,19 @@ class Dev(models.TransientModel):
         name += f"{property_type.lower()} in {city}" 
         name = name[0].upper() + name[1:]
         return name
-    
+
+    def sell_properties_and_reject_offers(self):
+        properties = self.env["real_estate.property"].search([])
+        for prop in properties:
+            if prop.offer_ids:
+                time.sleep(0.01)
+                if random.randint(1,10) > 7:
+                    # Sell the property
+                    best_offer = max(prop.offer_ids, key=lambda offer: offer.price, default=False)
+                    best_offer.action_accept()
+                    prop.status = "sold"
+                else:
+                    # Reject some offers
+                    for offer in prop.offer_ids:
+                        if random.randint(1,3) == 3:
+                            offer.action_refuse()

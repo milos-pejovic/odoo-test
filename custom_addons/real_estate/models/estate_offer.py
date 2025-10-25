@@ -1,6 +1,8 @@
 from odoo import models, fields, _, api
 from odoo.exceptions import UserError
+from datetime import datetime
 import logging
+
 
 _logger = logging.getLogger(__name__)
 
@@ -39,6 +41,9 @@ class EstateOffer(models.Model):
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.partner_id.id
         self.property_id.status = "sold"
+        # self.property_id.date_sold = fields.Datetime.now()
+        self.property_id.date_sold = datetime.now()
+
         return True ##TODO A public method should always return something so that it can be called through XML-RPC. When in doubt, just return True.
 
     def action_refuse(self):

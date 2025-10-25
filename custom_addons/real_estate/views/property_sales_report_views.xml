@@ -9,7 +9,7 @@
                 <field name="property_count"/>
                 <field name="total_value"/>
                 <field name="average_selling_price" />
-                <field name="new_properties" />
+                <field name="sold_properties" />
             </list>
         </field>
     </record>
@@ -22,14 +22,4 @@
         <field name="view_id" ref="view_property_sales_report_list"/>
         <field name="target">current</field>
     </record>
-
-    <!-- Menus -->
-    <menuitem id="root_level_1" name="Real Estate"/>
-
-    <menuitem id="second_level_reports" name="Reports" parent="root_level_1"/>
-    
-    <menuitem id="menu_property_sales_report"
-              name="Property Sales Report"
-              parent="second_level_reports"
-              action="action_property_sales_report"/>
 </odoo>

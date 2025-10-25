@@ -7,3 +7,4 @@ access_res_partner_portal,access.res.partner.portal,base.model_res_partner,base.
 access_property_tag,Access Property Tag,model_real_estate_property_tag,base.group_user,1,1,1,1
 access_development,Access Development,model_real_estate_dev,base.group_user,1,1,1,1
 access_property_sales_report,Access Property sales report,model_real_estate_property_sales_report,base.group_user,1,1,1,1
+access_property_seller_report, Access Property Seller report,model_real_estate_property_seller_report,base.group_user,1,1,1,1

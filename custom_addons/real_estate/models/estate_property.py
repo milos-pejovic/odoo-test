@@ -16,7 +16,7 @@ class EstateProperty(models.Model):
     _sql_constraints = [
         ("positive_expected_price", "CHECK(expected_price > 0)", "Expected price must be positive."),
         ("positive_selling_price", "CHECK(selling_price IS NULL OR selling_price >= 0)", "Selling price must be positive"), ##TODO: Error, not able to add this constraint, check why
-        ("positive_bedrooms", "CHECK(bedrooms > 0)", "The number of bedrooms must be positive"),
+        ("positive_bedrooms", "CHECK(bedrooms >= 0)", "The number of bedrooms must not be negative."),
         ("positive_garden_area", "CHECK(garden_area >= 0)", "The garden area cannot be negative"),
         ("positive_living_area", "CHECK(living_area >= 0)", "The living area cannot be negative"),
     ]
@@ -38,6 +38,7 @@ class EstateProperty(models.Model):
     description = fields.Text("Description")
     postcode = fields.Char("Post code")
     date_availability = fields.Date("Date availability", help="Until when the property is available")
+    date_sold = fields.Datetime("Date sold")
     expected_price = fields.Float("Expected price", required=True, default=0)
     selling_price = fields.Float("Selling price")
     bedrooms = fields.Integer("Bedrooms", help="The number of bedrooms")
@@ -55,9 +56,9 @@ class EstateProperty(models.Model):
         ],
         copy=False # If this record is duplicated, this field will not be duplicated
     )
-
-    validity = fields.Integer("Validity (days)", default=7)
+    date_deadline = fields.Date("Date deadline")
     
+    ##TODO: Pogeldati copy metodu, dase se definse.. unikatna vrednost 
     status = fields.Selection(string="Status",selection=
         [
             ("new", "New"),
@@ -75,9 +76,7 @@ class EstateProperty(models.Model):
 
     total_area = fields.Integer("Total area (sqm)", compute="_compute_total_area", help="Sum of living and garden area")
     best_offer = fields.Float("Best offer", compute="_compute_best_offer")
-
-    date_deadline = fields.Date("Date deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-
+    validity = fields.Integer(string="Validity (days)", compute="_compute_validity", inverse="_inverse_validity")
     number_of_offers = fields.Integer(compute="_compute_number_of_offers")
     number_of_non_refused_offers = fields.Integer(compute="_compute_number_of_non_refused_offers", store=True)
 
@@ -118,6 +117,7 @@ class EstateProperty(models.Model):
     # Computed fields methods
     #########################################################################################################
 
+    ##TODO: If it is stored, the decorater is not needed
     @api.depends("offer_ids.status")
     def _compute_number_of_non_refused_offers(self):
         """ Get the number of offers that are not refused """
@@ -147,18 +147,24 @@ class EstateProperty(models.Model):
                     best_offer = max(offer_prices)
             property.best_offer = best_offer
             
-    @api.depends("validity")
-    def _compute_date_deadline(self):
-        for property in self:
-            property.date_deadline = fields.Date.today() + relativedelta(days=property.validity)
-
-    def _inverse_date_deadline(self):
+    @api.depends("date_deadline")
+    def _compute_validity(self):
         for property in self:
             property.validity = (property.date_deadline - fields.Date.today()).days
+
+    def _inverse_validity(self):
+        for property in self:
+            property.date_deadline = fields.Date.today() + relativedelta(days=property.validity)
 
     #########################################################################################################
     # Python constraints
     #########################################################################################################
+
+    @api.constrains("bedrooms")
+    def _check_bedroom_number_positive(self):
+        for property in self:
+            if property.bedrooms and property.bedrooms < 0:
+                raise ValidationError(_("[Python constraint] The number of bedroms cannot be negative."))
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_and_expected_price(self):
@@ -175,13 +181,25 @@ class EstateProperty(models.Model):
             )
 
             if diff == 1:
-                raise ValidationError(_("Selling price cannot be lower than 90% of the expected price."))
+                raise ValidationError(_("[Python constraint] Selling price cannot be lower than 90% of the expected price."))
 
     @api.constrains("expected_price")
     def _check_expected_price_positive(self):
         for property in self:
             if property.expected_price < 0:
                 raise ValidationError(_("[Python constraint] Expected price cannot be negative."))
+
+    @api.constrains("date_deadline")
+    def _check_date_deadline_not_in_past(self):
+        for property in self:
+            if property.date_deadline < fields.Date.today():
+                raise ValidationError(_("Date deadline cannot be in the past."))
+            
+    @api.constrains("validity")
+    def _check_validity_not_negative(self):
+        for property in self:
+            if property.validity < 0:
+                raise ValidationError(_("Validity cannot be negative."))
 
     #########################################################################################################
     # Onchange methods
@@ -190,26 +208,15 @@ class EstateProperty(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         ##TODO: When garden value changes the fields garden_area and garden_orientation should become readonly in the view.
+        ##TODO: This has been achieved in the view itself.
         for property in self:
             if not property.garden:
                 property.garden_area = 0;
                 property.garden_orientation = None
 
-    # @api.onchange("date_deadline")o must 
-    # def _onchange_date_deadline(self):
-    #     ##TODO: Implement check if the date is in the past
-    #     for property in self:
-    #         return {
-    #             "warning" : {
-    #                 "title" : _("Date in the past"),
-    #                 "message" : _("Date deadline cannot be in the past")
-    #             }
-    #         }
-        
     #TODO: This would perform validation on frontend via AJAX
     @api.onchange("expected_price")
     def _onchange_expected_price(self):
-        ##TODO: Find out how to validate this field so that it must be positive
         for property in self:
             if property.expected_price < 0:
                 property.expected_price = abs(property.expected_price)
@@ -234,21 +241,21 @@ class EstateProperty(models.Model):
     #                 }
     #             }
     
-    ##TODO: This would perform validation on frontend via AJAX 
-    # @api.onchange("garden_area")
-    # def _onchange_garden_area(self):
-    #     ##TODO: This forces the value of gardern area to be 0 if garden is False, but still the field is not readonly
-    #     for property in self:
-    #         if not property.garden:
-    #             property.garden_area = 0 ##TODO: No business logic in onchange methods. Should this be here?
-    #         elif property.garden_area < 0:
-    #             property.garden_area = 0
-    #             return {
-    #                 "warning" : {
-    #                     "title" : _("Negative value"),
-    #                     "message" : _("Garden area cannot be negative")
-    #                 }
-    #             }
+    #TODO: This would perform validation on frontend via AJAX 
+    @api.onchange("garden_area")
+    def _onchange_garden_area(self):
+        ##TODO: This forces the value of gardern area to be 0 if garden is False, but still the field is not readonly
+        for property in self:
+            if not property.garden:
+                property.garden_area = 0 ##TODO: No business logic in onchange methods. Should this be here?
+            elif property.garden_area < 0:
+                property.garden_area = 0
+                return {
+                    "warning" : {
+                        "title" : _("Negative value"),
+                        "message" : _("Garden area cannot be negative")
+                    }
+                }
             
     @api.onchange("living_area")
     def _onchange_living_area(self):
@@ -264,7 +271,6 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden_orientation")
     def _onchange_garden_orientation(self):
-        ##TODO: This forces the value of gardern orientation to be None if garden is False, but still the field is not readonly
         for property in self:
             if not property.garden:
                 property.garden_orientation = None ##TODO: No business logic in onchange methods. Should this be here?
@@ -297,3 +303,8 @@ class EstateProperty(models.Model):
                 _logger.info(f"Record {property_record.id} cannot be deleted due to status: {property_record.status}")
                 raise UserError("Cannot delete a sold proeprty")
         return super().unlink()
+
+    def update(self, vals):
+        ## BIti pozvan sa UI 
+        ##TODO: retko se koristi, za sada preskociti
+        return super().update(vals)

@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <!-- Add your field inside the "form" view using xpath -->
             <xpath expr="//sheet/notebook" position="inside">
-                <page string="Properties">
+                <page string="Real estate properties">
                     <field name="property_ids">
                         <list editable="bottom" >
                             <field name="name"/>

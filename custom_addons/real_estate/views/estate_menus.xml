@@ -34,6 +34,11 @@
               parent="menu_reports"
               action="action_property_sales_report"/>
 
+    <menuitem id="menu_property_seller_report"
+              name="Property Seller Report"
+              parent="menu_reports"
+              action="action_property_seller_report"/>
+
     <menuitem id="menu_development" name="(Development)" parent="root_real_estate">
         <menuitem id="menu_seed_db" name="Seed the database" action="action_my_server"/>
     </menuitem>
