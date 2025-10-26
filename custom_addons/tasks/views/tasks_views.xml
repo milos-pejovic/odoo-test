@@ -1,0 +1,147 @@
+
+<odoo>
+    <!-- Form view -->
+    <record id="tasks_task_view_form" model="ir.ui.view">
+        <field name="name">tasks.task.view.form</field>
+        <field name="model">tasks.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="status" string="" widget="statusbar" status_visible="groomed, in_progress, testing, on_hold, done" />
+                    </group>
+                </group>
+                
+                <sheet>
+                    <group>
+                        <field name="title"></field>
+                        <field name="priority"></field>
+                        <field name="status"></field>
+                        <field name="type"></field>
+                        <field name="description" widget="text"></field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="tasks_task_view_list" model="ir.ui.view">
+        <field name="name">tasks.task.view.list</field>
+        <field name="model">tasks.task</field>
+        <field name="arch" type="xml">
+            <list default_order="create_date desc">
+                <field name="title" width="200" />
+                <field name="status" width="100" 
+                widget="badge"
+                options="{
+                    'groomed': 'muted',
+                    'in_progress': 'badge-success',
+                    'testing': 'warning',
+                    'on_hold': 'danger',
+                    'done': 'primary'
+                }"/>
+                <field name="type" width="100" />
+                <field name="description" width="500" />
+                <field name="priority" width="150" />
+            </list>
+        </field>
+    </record>
+
+
+    <!-- TODO: Double inheritance does not work, find out why -->
+    <!-- <record id="real_estate_property_view_list_inherit_2" model="ir.ui.view">
+        <field name="name">real_estate.property.view.list.inherit.2</field>
+        <field name="model">real_estate.property</field>
+        <field name="inherit_id" ref="real_estate_property_view_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='number_of_offers']" position="after">
+                <field name="create_date" />
+            </xpath>
+        </field>
+        <field name="sequence">20</field>
+    </record> -->
+
+    <!-- Search view -->
+    <!-- <record id="real_estate_proeprty_search_view_search" model="ir.ui.view">
+        <field name="name">real_estate.property.view.search</field>
+        <field name="model">real_estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="id" />
+                <field name="name" filter_domain="[('name', 'ilike', self)]"/>
+                <field name="seller_id" filter_domain="[('seller_id', 'ilike', self)]"/>
+                <field name="postcode" filter_domain="[('postcode', 'ilike', self)]" />
+                <field name="status" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="facades" />
+                <separator>
+                    <group string="Filter">
+                        <filter string="Available" name="available" domain="[('status', '!=', 'sold')]" />
+                        
+                    </group>
+                    <group>
+                        <filter string="Cottages" name="filter_cottages" domain="[('property_type_id.name', '=', 'Cottage')]" />
+                    </group>
+                    <group string="Other Filters">
+                        <filter string="Active offers" name="filter_non_refused_proeprties" domain="[('number_of_non_refused_offers', '>', '0')]" />
+                    </group>
+                </separator>
+                <separator>
+                    <filter string="Houses" name="filter_houses" domain="[('property_type_id.name', '=', 'House')]" />
+                </separator>
+            </search>
+        </field>
+    </record> -->
+
+    <record id="tasks_task_view_kanban" model="ir.ui.view">
+        <field name="name">tasks.task.view.kanban</field>
+        <field name="model">tasks.task</field>
+        <field name="arch" type="xml">
+
+            <kanban string="Tasks Kanban"
+                default_group_by="status"
+                default_order="priority"
+                records_draggable="1"
+                group_expand="True">
+
+            <!-- Optional progressbar showing status -->
+            <progressbar 
+                field="status"
+                colors='{"1_groomed" : "info", "2_in_progress": "success", "3_testing": "warning", "4_on_hold" : "danger" , "5_done": "primary"}' />
+
+            <!-- Fields shown on card -->
+            <field name="status"/>
+            <field name="priority"/>
+            <field name="title"/>
+
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="oe_kanban_card">
+                        <div class="mt-1">
+                            <h3><field name="title"/></h3>
+                        </div>
+                        <div class="mt-1">
+                            <span class="fw-bold">Priority: </span>
+                            <field name="priority"/>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+
+
+        </field>
+    </record>
+
+
+    <!-- Action -->
+    <record id="tasks_action" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">tasks.task</field>
+        <field name="view_mode">kanban,list,form</field>
+        <!-- <field name="view_id" ref="real_estate_property_view_list"/>  -->
+        <!-- <field name="context">{"search_default_available" : 1}</field> -->
+    </record>
+</odoo>

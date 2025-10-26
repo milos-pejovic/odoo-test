@@ -1,0 +1,8 @@
+<odoo>
+    <menuitem id="tasks" name="Tasks"/>
+
+    <menuitem id="tasks_tasks" name="Tasks" parent="tasks">
+        <menuitem id="menu_third_level_tasks" name="Tasks" action="tasks_action"/>
+    </menuitem>
+
+</odoo>
