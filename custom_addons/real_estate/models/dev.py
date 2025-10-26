@@ -10,6 +10,7 @@ class Dev(models.TransientModel):
     seeding_data = {
         "properties" : 300,
         "partners" : 12,
+        "sellers" : 10,
         "offers_per_partner" : 5,
         "offer_price" : None, # None for random, Int for fixed
         "tags_to_create" : ["Modern", "New", "Renovated", "Luxurious", "Suburbs", "Centre", "By the sea", "Popular", "Limited time"],
@@ -33,6 +34,7 @@ class Dev(models.TransientModel):
         print("SEEDING THE DATABASE")
         print("*****************************************************************************************************")
 
+        self.env["real_estate.seller"].search([]).unlink()
         self.env["real_estate.property_tag"].search([]).unlink()
         self.env["real_estate.offer"].search([]).unlink()
         self.env["real_estate.partner"].search([]).unlink()
@@ -41,6 +43,7 @@ class Dev(models.TransientModel):
         self.env["real_estate.property"].search([]).unlink()
         ##TODO: What happens to property_tags junction table when these are unlinked/deleted ^?
 
+        self.seed_sellers()
         self.seed_partners()
         self.seed_tags()
         self.seed_types()
@@ -57,6 +60,31 @@ class Dev(models.TransientModel):
 
         properties = self.env['real_estate.property'].search([])
         properties.status = 'new'
+
+    def seed_sellers(self):
+        group_seller = self.env.ref("real_estate.group_seller", raise_if_not_found=False)
+        if not group_seller:
+            raise ValueError("Group 'real_estate.group_seller' not found. Make sure it exists")
+                         
+        for i in range(self.seeding_data["sellers"]):
+            fname = random.choice(self.first_names)
+            lname = random.choice(self.last_names)
+            email = f"{fname}.{lname}.seller@test.com"
+
+            partner = self.env["res.partner"].create({
+                "name" : f"{fname} {lname}",
+                "email" : email
+            })
+
+            user = self.env["res.users"].create({
+                "partner_id" : partner.id,
+                "login" : email,
+                "groups_id": [(4, group_seller.id)],
+            })
+
+            self.env["real_estate.seller"].create({
+                "user_id" : user.id
+            })
 
     def seed_offers(self):
         properties = self.env["real_estate.property"].search([])
@@ -80,7 +108,7 @@ class Dev(models.TransientModel):
 
     def seed_properties(self):
         property_values = []
-        users = self.env["res.users"].search([])
+        users = self.env["real_estate.seller"].search([])
         property_types = self.env["real_estate.property_type"].search([])
         all_tag_ids = self.env['real_estate.property_tag'].search([]).ids
 

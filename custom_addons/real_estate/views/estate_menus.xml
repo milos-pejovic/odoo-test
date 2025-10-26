@@ -18,8 +18,9 @@
     </menuitem>
 
 
-    <menuitem id="menu_partners" name="Partners" parent="root_real_estate">
+    <menuitem id="menu_partners" name="Partners And Sellers" parent="root_real_estate">
         <menuitem id="menu_partners_list" name="Partners" action="estate_partner_action"/>
+        <menuitem id="menu_sellers_list" name="Sellers" action="estate_seller_action"/>
     </menuitem>
 
 

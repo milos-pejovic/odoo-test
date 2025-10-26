@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0",
-    "depends": ["base", "website", "base"],
+    "depends": ["base", "website"],
     "author": "Milos Pejovic",
     "category": "Category",
     "description": """
@@ -9,8 +9,10 @@
     """,
     # data files always loaded at installation
     "data": [
+        "data/groups.xml",
+
         "security/ir.model.access.csv",
-        
+
         # Actions first
         "views/estate_property_views.xml",
         "views/estate_property_types_views.xml",
@@ -19,11 +21,11 @@
         "views/estate_buyers_view.xml",
         "views/estate_property_tag.xml",
         "views/estate_development.xml",
-        "views/res_users.xml",
         "views/property_inquiry_form.xml",
         "views/test_view.xml",
         "views/property_sales_report_views.xml",
         "views/property_seller_report_view.xml",
+        "views/estate_seller.xml",
 
         # Then the menu that references it
         "views/estate_menus.xml",

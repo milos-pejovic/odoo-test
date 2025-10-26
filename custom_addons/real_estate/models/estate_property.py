@@ -97,9 +97,9 @@ class EstateProperty(models.Model):
     )
 
     seller_id = fields.Many2one(
-        comodel_name="res.users",
+        comodel_name="real_estate.seller",
         string="Seller",
-        default=lambda self: self.env.user # The current user
+        default=lambda self: self.env["real_estate.seller"].search([('user_id', '=', self.env.user.id)], limit=1) # The current real_estate.seller
     )
 
     buyer_id = fields.Many2one(

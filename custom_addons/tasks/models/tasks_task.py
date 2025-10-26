@@ -13,7 +13,7 @@ class TasksTask(models.Model):
         ("3_testing", "Testing"),
         ("4_on_hold", "On hold"),
         ("5_done", "Done")
-    ], default="groomed")
+    ], default="1_groomed")
 
     type = fields.Selection(string="Type", selection=[
         ("backend", "Backend"),
