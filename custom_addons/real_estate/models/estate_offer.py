@@ -20,7 +20,8 @@ class EstateOffer(models.Model):
         ],
         copy=False
     )
-    partner_id = fields.Many2one("real_estate.partner", required=True)
+    
+    buyer_id = fields.Many2one("real_estate.buyer", required=True)
     property_id = fields.Many2one("real_estate.property", required=True)
     type_id = fields.Many2one(related="property_id.property_type_id", store=True) ##TODO: Revise store=True here
     
@@ -39,7 +40,7 @@ class EstateOffer(models.Model):
                 offer.status = "refused"
         self.status = "accepted"
         self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id.id
+        self.property_id.buyer_id = self.buyer_id.id
         self.property_id.status = "sold"
         # self.property_id.date_sold = fields.Datetime.now()
         self.property_id.date_sold = datetime.now()

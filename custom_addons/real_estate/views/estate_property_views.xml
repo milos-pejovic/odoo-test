@@ -71,7 +71,7 @@
                             <page string="Offers">
                                 <field name="offer_ids">
                                     <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
-                                        <field name="partner_id"/>
+                                        <field name="buyer_id"/>
                                         <field name="price" />
                                         <button icon="fa-check" invisible="status in ['accepted', 'refused']" title="Accept offer" type="object" name="action_accept" />
                                         <button icon="fa-times" invisible="status in ['accepted', 'refused']" title="Refuse offer" type="object" name="action_refuse" /> 

@@ -103,7 +103,7 @@ class EstateProperty(models.Model):
     )
 
     buyer_id = fields.Many2one(
-        comodel_name="real_estate.partner",
+        comodel_name="real_estate.buyer",
         string="Buyer",
         copy=False
     )

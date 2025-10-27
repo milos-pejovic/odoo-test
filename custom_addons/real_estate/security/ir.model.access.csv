@@ -9,3 +9,4 @@ access_development,Access Development,model_real_estate_dev,base.group_user,1,1,
 access_property_sales_report,Access Property sales report,model_real_estate_property_sales_report,base.group_user,1,1,1,1
 access_property_seller_report,Access Property Seller report,model_real_estate_property_seller_report,base.group_user,1,1,1,1
 access_real_estate_seller,Access Real Estate Seller,model_real_estate_seller,base.group_user,1,1,1,1
+access_real_estate_buyers,Access Real Estate Buyers,model_real_estate_buyer,base.group_user,1,1,1,1

@@ -2,12 +2,15 @@
 <odoo>
     <!-- Form view-->
     <record id="real_estate_buyer_form_view_form" model="ir.ui.view">
-        <field name="name">res.partner.view.form</field>
-        <field name="model">res.partner</field>
+        <field name="name">real_estate.buyer.view.form</field>
+        <field name="model">real_estate.buyer</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <field name="name" />
+                    <group>
+                        <field name="name" />
+                        <field name="email" />
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -15,19 +18,20 @@
 
     <!-- List View -->
     <record id="real_estate_buyer_list_view_list" model="ir.ui.view">
-        <field name="name">res.partner.view.list</field>
-        <field name="model">res.partner</field>
+        <field name="name">real_estate.buyer.view.list</field>
+        <field name="model">real_estate.buyer</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" />
+                <field name="name" width="150" />
+                <field name="email" width="150" />
             </list>
         </field>
     </record>
 
     <!-- Action -->
-    <record id="estate_buyers_action" model="ir.actions.act_window">
+    <record id="estate_buyer_action" model="ir.actions.act_window">
         <field name="name">Buyers</field>
-        <field name="res_model">res.partner</field>
+        <field name="res_model">real_estate.buyer</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>

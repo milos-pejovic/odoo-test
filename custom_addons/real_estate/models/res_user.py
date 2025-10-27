@@ -9,3 +9,9 @@ class ResUser(models.Model):
         comodel_name="real_estate.seller",
         inverse_name="user_id"
     )
+
+    buyer_ids = fields.One2many(
+        string="Buyer profiles",
+        comodel_name="real_estate.buyer",
+        inverse_name="user_id"
+    )

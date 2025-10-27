@@ -1,9 +1,9 @@
 from odoo import fields, models, api
 
 
-class EstateSeller(models.Model):
-    _name = "real_estate.seller"
-    _description = "Real estate seller"
+class EstateBuyer(models.Model):
+    _name = "real_estate.buyer"
+    _description = "Real estate buyer"
 
     user_id = fields.Many2one(
         string="User",
@@ -11,15 +11,9 @@ class EstateSeller(models.Model):
         required=True
     )
 
-    property_ids = fields.One2many(
-        string="Real estate properties",
-        comodel_name="real_estate.property",
-        inverse_name="seller_id"
-    )
-
     name = fields.Char(
         string="Name",
-        related="user_id.partner_id.name", 
+        related="user_id.partner_id.name",
         readonly=False
     )
 
@@ -29,19 +23,16 @@ class EstateSeller(models.Model):
         readonly=False
     )
 
-    properties_number = fields.Integer(
-        string="Properties number",
-        compute="_compute_properties_number"
+    offer_ids = fields.One2many(
+        string="Offers",
+        comodel_name="real_estate.offer",
+        inverse_name="buyer_id"
     )
-
-    def _compute_properties_number(self):
-        for seller in self:
-            seller.properties_number = len(seller.property_ids)
 
     @api.model
     def create(self, vals):
         if not vals.get("user_id"):
-            name = vals.get("name")
+            name = vals.get("name") or "New buyer"
             email = f"{name.lower().replace(' ', '_')}@example.com"
 
             partner = self.env["res.partner"].create({
@@ -52,10 +43,10 @@ class EstateSeller(models.Model):
             user = self.env["res.users"].create({
                 "partner_id" : partner.id,
                 "login" : email,
-                "groups_id": [(4, self.env.ref("real_estate.group_seller").id)],
+                "groups_id": [(4, self.env.ref("real_estate.group_buyer").id)],
             })
 
             vals["user_id"] = user.id
 
-        seller = super().create(vals)
-        return seller
+        buyer = super().create(vals)
+        return buyer

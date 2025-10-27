@@ -9,7 +9,7 @@
                 <sheet>
                     <group>
                         <h1>
-                            <field name="partner_id" />
+                            <field name="buyer_id" />
                         </h1>
                     </group>
 
@@ -29,7 +29,7 @@
         <field name="model">real_estate.offer</field>
         <field name="arch" type="xml">
             <list>
-                <field name="partner_id" />
+                <field name="buyer_id" />
                 <field name="property_id" />
                 <field name="price"/>
                 <field name="status"/>

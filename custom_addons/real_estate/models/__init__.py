@@ -10,3 +10,4 @@ from . import dev
 from . import property_sales_report
 from . import property_seller_report
 from . import res_user
+from . import estate_buyer

@@ -17,7 +17,6 @@
         "views/estate_property_views.xml",
         "views/estate_property_types_views.xml",
         "views/estate_offers_views.xml",
-        "views/estate_partner.xml",
         "views/estate_buyers_view.xml",
         "views/estate_property_tag.xml",
         "views/estate_development.xml",

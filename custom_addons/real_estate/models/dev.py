@@ -7,9 +7,9 @@ class Dev(models.TransientModel):
     _name = "real_estate.dev"
     _description = "Used for development functionalities"
 
-    seeding_data = {
+    config = {
         "properties" : 300,
-        "partners" : 12,
+        "buyers" : 12,
         "sellers" : 10,
         "offers_per_partner" : 5,
         "offer_price" : None, # None for random, Int for fixed
@@ -34,17 +34,18 @@ class Dev(models.TransientModel):
         print("SEEDING THE DATABASE")
         print("*****************************************************************************************************")
 
-        self.env["real_estate.seller"].search([]).unlink()
         self.env["real_estate.property_tag"].search([]).unlink()
         self.env["real_estate.offer"].search([]).unlink()
-        self.env["real_estate.partner"].search([]).unlink()
+        self.env["real_estate.buyer"].search([]).unlink()
         self.env["real_estate.property_type"].search([]).unlink()
         self.prepare_properties_for_deletion()
         self.env["real_estate.property"].search([]).unlink()
+        self.env["real_estate.seller"].search([]).unlink()
         ##TODO: What happens to property_tags junction table when these are unlinked/deleted ^?
 
+        self.seed_buyers()
         self.seed_sellers()
-        self.seed_partners()
+        # self.seed_partners() ##TODO: remove
         self.seed_tags()
         self.seed_types()
         self.seed_properties()
@@ -52,21 +53,42 @@ class Dev(models.TransientModel):
 
         self.sell_properties_and_reject_offers()
 
-    def prepare_properties_for_deletion(self):
-        """ 
-        There is a delete CRUD override in properies that prevents deletion if a property has status "offer_received" 
-        We have to change the statuses of all properties before deleting them.
-        """
+    def seed_buyers(self):
 
-        properties = self.env['real_estate.property'].search([])
-        properties.status = 'new'
+        print("SEEDING BUYERS - before group check")
+
+        group_buyer = self.env.ref("real_estate.group_buyer", raise_if_not_found=False)
+        if not group_buyer:
+            raise ValueError("Group 'real_estate.group_buyer' not found. Make sure it exists")
+
+        print("SEEDING BUYERS - after group check")
+
+        for i in range(self.config["buyers"]):
+            fname = random.choice(self.first_names)
+            lname = random.choice(self.last_names)
+            email = f"{fname}.{lname}.seller@test.com"
+
+            partner = self.env["res.partner"].create({
+                "name" : f"{fname} {lname}",
+                "email" : email
+            })
+
+            user = self.env["res.users"].create({
+                "partner_id" : partner.id,
+                "login" : email,
+                "groups_id": [(4, group_buyer.id)],
+            })
+
+            self.env["real_estate.buyer"].create({
+                "user_id" : user.id
+            })
 
     def seed_sellers(self):
         group_seller = self.env.ref("real_estate.group_seller", raise_if_not_found=False)
         if not group_seller:
             raise ValueError("Group 'real_estate.group_seller' not found. Make sure it exists")
                          
-        for i in range(self.seeding_data["sellers"]):
+        for i in range(self.config["sellers"]):
             fname = random.choice(self.first_names)
             lname = random.choice(self.last_names)
             email = f"{fname}.{lname}.seller@test.com"
@@ -86,20 +108,32 @@ class Dev(models.TransientModel):
                 "user_id" : user.id
             })
 
+    def prepare_properties_for_deletion(self):
+        """ 
+        There is a delete CRUD override in properies that prevents deletion if a property has status "offer_received" 
+        We have to change the statuses of all properties before deleting them.
+        """
+
+        properties = self.env['real_estate.property'].search([])
+        properties.status = 'new'
+
     def seed_offers(self):
         properties = self.env["real_estate.property"].search([])
-        partners = self.env["real_estate.partner"].search([])
+        buyers = self.env["real_estate.buyer"].search([])
+
+        print("BUYERS")
+        print(buyers)
 
         for property in properties:
             if random.randint(1, 10) > 3: # Whether to create offers for this property or not
                 number_of_offers = random.randint(1, 10)
                 offer_values = []
                 for i in range(number_of_offers):
-                    price = self.seeding_data["offer_price"] if self.seeding_data["offer_price"] else property.expected_price * (random.randint(9, 13) / 10)
+                    price = self.config["offer_price"] if self.config["offer_price"] else property.expected_price * (random.randint(9, 13) / 10)
                     offer_values.append({
                         "status" : None,
                         "price" : price,
-                        "partner_id" : random.choice(partners).id,
+                        "buyer_id" : random.choice(buyers).id,
                         "property_id" : property.id,
                         "type_id" : property.property_type_id.id
                     })
@@ -112,7 +146,7 @@ class Dev(models.TransientModel):
         property_types = self.env["real_estate.property_type"].search([])
         all_tag_ids = self.env['real_estate.property_tag'].search([]).ids
 
-        for i in range(self.seeding_data["properties"]):
+        for i in range(self.config["properties"]):
             property_type = random.choice(property_types)
             city = random.choice(self.cities)
             garden = random.randint(0,1)
@@ -144,19 +178,20 @@ class Dev(models.TransientModel):
             })
         self.env["real_estate.property"].create(property_values)
 
-    def seed_partners(self):       
-        properties_vals = []
-        for i in range(self.seeding_data["partners"]):
-            fname = random.choice(self.first_names)
-            lname = random.choice(self.last_names)
-            properties_vals.append(
-                {"name" : f"{fname} {lname}"}
-            )
-        self.env["real_estate.partner"].create(properties_vals)
+    ##TODO: remove
+    # def seed_partners(self):       
+    #     properties_vals = []
+    #     for i in range(self.config["partners"]):
+    #         fname = random.choice(self.first_names)
+    #         lname = random.choice(self.last_names)
+    #         properties_vals.append(
+    #             {"name" : f"{fname} {lname}"}
+    #         )
+    #     self.env["real_estate.partner"].create(properties_vals)
 
     def seed_tags(self):
         tag_vals = []
-        for tag in self.seeding_data["tags_to_create"]:
+        for tag in self.config["tags_to_create"]:
             tag_vals.append({
                 "name" : tag
             })
@@ -164,7 +199,7 @@ class Dev(models.TransientModel):
 
     def seed_types(self):
         type_values = []
-        for type in self.seeding_data["property_types"]:
+        for type in self.config["property_types"]:
             type_values.append({
                 "name" : type
             })
