@@ -5,7 +5,7 @@ class PropertySalesReport(models.Model):
     _auto = False
 
     id = fields.Integer("ID", readonly=True)
-    seller_id = fields.Many2one(comodel_name="res.users", readonly=True)
+    seller_id = fields.Many2one(comodel_name="real_estate.seller", readonly=True)
     property_count = fields.Integer(string="Number of properties", readonly=True)
     total_value = fields.Float("Total value", readonly=True)
     sold_properties = fields.Integer("New properties")

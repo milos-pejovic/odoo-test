@@ -7,7 +7,7 @@ class PropertySellerReport(models.Model):
     _auto = False
 
     id = fields.Integer("ID", readonly=True)
-    seller_id = fields.Many2one(comodel_name="res.users", readonly=True)
+    seller_id = fields.Many2one(comodel_name="real_estate.seller", readonly=True)
     name = fields.Char("Property name", readonly=True)
     date_sold = fields.Datetime("Selling date", readonly=True)
     selling_price = fields.Float("Selling price", readonly=True)
