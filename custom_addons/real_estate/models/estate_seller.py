@@ -38,24 +38,33 @@ class EstateSeller(models.Model):
         for seller in self:
             seller.properties_number = len(seller.property_ids)
 
-    @api.model
-    def create(self, vals):
-        if not vals.get("user_id"):
-            name = vals.get("name")
-            email = f"{name.lower().replace(' ', '_')}@example.com"
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Support both single and batch creation."""
 
-            partner = self.env["res.partner"].create({
-                "name" : name,
-                "email" : email
-            })
+        # Normalize input to a list of dicts
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
 
-            user = self.env["res.users"].create({
-                "partner_id" : partner.id,
-                "login" : email,
-                "groups_id": [(4, self.env.ref("real_estate.group_seller").id)],
-            })
+        group_seller = self.env.ref("real_estate.group_seller")
 
-            vals["user_id"] = user.id
+        for vals in vals_list:
+            if not vals.get("user_id"):
+                name = vals.get("name") or "Unnamed"
+                email = f"{name.lower().replace(' ', '_')}@example.com"
 
-        seller = super().create(vals)
-        return seller
+                partner = self.env["res.partner"].create({
+                    "name": name,
+                    "email": email,
+                })
+
+                user = self.env["res.users"].create({
+                    "partner_id": partner.id,
+                    "login": email,
+                    "groups_id": [(4, group_seller.id)],
+                })
+
+                vals["user_id"] = user.id
+
+        sellers = super().create(vals_list)
+        return sellers

@@ -20,6 +20,22 @@
                         <field name="type"></field>
                         <field name="description" widget="text"></field>
                     </group>
+
+                    <group>
+                        <notebook class="o_notebook_bordered">
+                            <page string="Subtasks">
+                                <field name="subtask_ids">
+                                    <list default_order="sequence" editable="bottom">
+                                        <field name="sequence" widget="handle" />
+                                        <field name="title" width="150" />
+                                        <field string="Icon" name="icon_x" width="150" />
+                                        <field name="status" width="100" />
+                                        <field name="description" class="wrap-text" width="400"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -106,30 +122,34 @@
                 records_draggable="1"
                 group_expand="True">
 
-            <!-- Optional progressbar showing status -->
-            <progressbar 
-                field="status"
-                colors='{"1_groomed" : "info", "2_in_progress": "success", "3_testing": "warning", "4_on_hold" : "danger" , "5_done": "primary"}' />
+                <!-- Optional progressbar showing status -->
+                <progressbar 
+                    field="status"
+                    colors='{"1_groomed" : "info", "2_in_progress": "success", "3_testing": "warning", "4_on_hold" : "danger" , "5_done": "primary"}' />
 
-            <!-- Fields shown on card -->
-            <field name="status"/>
-            <field name="priority"/>
-            <field name="title"/>
+                <!-- Fields shown on card -->
+                <field name="status"/>
+                <field name="priority"/>
+                <field name="title"/>
 
-            <templates>
-                <t t-name="kanban-box">
-                    <div class="oe_kanban_card">
-                        <div class="mt-1">
-                            <h3><field name="title"/></h3>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <div class="mt-1">
+                                <h3><field name="title"/></h3>
+                            </div>
+                            <div class="mt-1">
+                                <span class="fw-bold">Priority: </span>
+                                <field name="priority"/>
+                            </div>
+                            <div class="mt-1">
+                                <span class="fw-bold">Subtasks (done/total): </span>
+                                <field name="subtasks_done_of_total" />
+                            </div>
                         </div>
-                        <div class="mt-1">
-                            <span class="fw-bold">Priority: </span>
-                            <field name="priority"/>
-                        </div>
-                    </div>
-                </t>
-            </templates>
-        </kanban>
+                    </t>
+                </templates>
+            </kanban>
 
 
         </field>

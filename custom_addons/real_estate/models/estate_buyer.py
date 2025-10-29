@@ -29,24 +29,33 @@ class EstateBuyer(models.Model):
         inverse_name="buyer_id"
     )
 
-    @api.model
-    def create(self, vals):
-        if not vals.get("user_id"):
-            name = vals.get("name") or "New buyer"
-            email = f"{name.lower().replace(' ', '_')}@example.com"
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Support both single and batch creation."""
 
-            partner = self.env["res.partner"].create({
-                "name" : name,
-                "email" : email
-            })
+        # Normalize input to a list of dicts
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
 
-            user = self.env["res.users"].create({
-                "partner_id" : partner.id,
-                "login" : email,
-                "groups_id": [(4, self.env.ref("real_estate.group_buyer").id)],
-            })
+        group_buyer = self.env.ref("real_estate.group_buyer")
 
-            vals["user_id"] = user.id
+        for vals in vals_list:
+            if not vals.get("user_id"):
+                name = vals.get("name") or "Unnamed"
+                email = f"{name.lower().replace(' ', '_')}@example.com"
 
-        buyer = super().create(vals)
-        return buyer
+                partner = self.env["res.partner"].create({
+                    "name": name,
+                    "email": email,
+                })
+
+                user = self.env["res.users"].create({
+                    "partner_id": partner.id,
+                    "login": email,
+                    "groups_id": [(4, group_buyer.id)],
+                })
+
+                vals["user_id"] = user.id
+
+        sellers = super().create(vals_list)
+        return sellers

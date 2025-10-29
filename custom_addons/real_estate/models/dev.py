@@ -45,7 +45,6 @@ class Dev(models.TransientModel):
 
         self.seed_buyers()
         self.seed_sellers()
-        # self.seed_partners() ##TODO: remove
         self.seed_tags()
         self.seed_types()
         self.seed_properties()
@@ -177,17 +176,6 @@ class Dev(models.TransientModel):
                 "tag_ids" : random_tag_ids
             })
         self.env["real_estate.property"].create(property_values)
-
-    ##TODO: remove
-    # def seed_partners(self):       
-    #     properties_vals = []
-    #     for i in range(self.config["partners"]):
-    #         fname = random.choice(self.first_names)
-    #         lname = random.choice(self.last_names)
-    #         properties_vals.append(
-    #             {"name" : f"{fname} {lname}"}
-    #         )
-    #     self.env["real_estate.partner"].create(properties_vals)
 
     def seed_tags(self):
         tag_vals = []

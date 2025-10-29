@@ -150,7 +150,9 @@ class EstateProperty(models.Model):
     @api.depends("date_deadline")
     def _compute_validity(self):
         for property in self:
-            property.validity = (property.date_deadline - fields.Date.today()).days
+            property.validity = 0
+            if property.date_deadline:
+                property.validity = (property.date_deadline - fields.Date.today()).days
 
     def _inverse_validity(self):
         for property in self:

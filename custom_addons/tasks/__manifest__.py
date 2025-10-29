@@ -7,6 +7,11 @@
     "description": """
     """,
     # data files always loaded at installation
+    "assets" : {
+        "web.assets_backend" : [
+            "tasks/static/src/css/style.css"
+        ]
+    },
     "data": [
         "security/ir.model.access.csv",
         
