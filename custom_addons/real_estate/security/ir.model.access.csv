@@ -3,10 +3,16 @@ access_property_user,Access Estate Property,model_real_estate_property,base.grou
 access_estate_property_type_user,Access Estate Property Type,model_real_estate_property_type,base.group_user,1,1,1,1
 access_partner_user,Access Estate Partner,model_real_estate_partner,base.group_user,1,1,1,1
 access_offer_user,Access Estate Offer,model_real_estate_offer,base.group_user,1,1,1,1
-access_res_partner_portal,access.res.partner.portal,base.model_res_partner,base.group_user,1,1,1,1
-access_property_tag,Access Property Tag,model_real_estate_property_tag,base.group_user,1,1,1,1
-access_development,Access Development,model_real_estate_dev,base.group_user,1,1,1,1
-access_property_sales_report,Access Property sales report,model_real_estate_property_sales_report,base.group_user,1,1,1,1
-access_property_seller_report,Access Property Seller report,model_real_estate_property_seller_report,base.group_user,1,1,1,1
-access_real_estate_seller,Access Real Estate Seller,model_real_estate_seller,base.group_user,1,1,1,1
-access_real_estate_buyers,Access Real Estate Buyers,model_real_estate_buyer,base.group_user,1,1,1,1
+access_res_partner_portal_user,access.res.partner.portal,base.model_res_partner,base.group_user,1,1,1,1
+access_property_tag_user,Access Property Tag,model_real_estate_property_tag,base.group_user,1,1,1,1
+access_development_user,Access Development,model_real_estate_dev,base.group_user,1,1,1,1
+access_property_sales_report_user,Access Property sales report,model_real_estate_property_sales_report,base.group_user,1,1,1,1
+access_property_seller_report_user,Access Property Seller report,model_real_estate_property_seller_report,base.group_user,1,1,1,1
+access_real_estate_seller_user,Access Real Estate Seller,model_real_estate_seller,base.group_user,1,1,1,1
+access_real_estate_buyers_user,Access Real Estate Buyers,model_real_estate_buyer,base.group_user,1,1,1,1
+
+
+
+access_res_user_seller,Access Res.Users,model_res_users,real_estate.group_seller,1,0,0,0
+access_res_partner_seller,Access Res.Partner,base.model_res_partner,real_estate.group_seller,1,0,0,0
+access_mail_channel_seller,Access Discuss Channel,mail.model_mail_channel,real_estate.group_seller,1,0,0,0

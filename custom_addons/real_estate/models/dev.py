@@ -36,11 +36,16 @@ class Dev(models.TransientModel):
 
         self.env["real_estate.property_tag"].search([]).unlink()
         self.env["real_estate.offer"].search([]).unlink()
-        self.env["real_estate.buyer"].search([]).unlink()
+
+        # self.env["real_estate.buyer"].search([]).unlink() ##TODO: remove
+        self.remove_existing_buyers()
+        
         self.env["real_estate.property_type"].search([]).unlink()
         self.prepare_properties_for_deletion()
         self.env["real_estate.property"].search([]).unlink()
-        self.env["real_estate.seller"].search([]).unlink()
+
+        # self.env["real_estate.seller"].search([]).unlink() ##TODO: remove
+        self.remove_existing_sellers()
         ##TODO: What happens to property_tags junction table when these are unlinked/deleted ^?
 
         self.seed_buyers()
@@ -52,15 +57,84 @@ class Dev(models.TransientModel):
 
         self.sell_properties_and_reject_offers()
 
+    @api.model
+    def remove_existing_sellers(self):
+        sellers = self.env["real_estate.seller"].search([])
+        related_users = sellers.mapped("user_id")
+        related_partners = related_users.mapped("partner_id")
+
+        sellers.unlink() 
+        related_users.unlink()
+        related_partners.unlink()
+
+    @api.model
+    def remove_existing_buyers(self):
+        buyers = self.env["real_estate.buyer"].search([])
+        related_users = buyers.mapped("user_id")
+        related_partners = related_users.mapped("partner_id")
+
+        buyers.unlink() 
+        related_users.unlink()
+        related_partners.unlink()
+
+    def create_buyer_buyer(self):
+        """ Create the default testing buyer """
+        
+        group_buyer = self.env.ref("real_estate.group_buyer", raise_if_not_found=False)
+        if not group_buyer:
+            raise ValueError("Group 'real_estate.group_buyer' not found. Make sure it exists")
+                         
+        name = "buyer"
+        email = "buyer@test.com"
+
+        partner = self.env["res.partner"].create({
+            "name" : name,
+            "email" : email
+        })
+
+        user = self.env["res.users"].create({
+            "partner_id" : partner.id,
+            "login" : name,
+            "password" : name,
+            "groups_id": [(4, group_buyer.id)],
+        })
+
+        self.env["real_estate.buyer"].create({
+            "user_id" : user.id
+        })
+
+    def create_seller_seller(self):
+        """ Create the default testing seller """
+        
+        group_seller = self.env.ref("real_estate.group_seller", raise_if_not_found=False)
+        if not group_seller:
+            raise ValueError("Group 'real_estate.group_seller' not found. Make sure it exists")
+                         
+        name = "seller"
+        email = "seller@test.com"
+
+        partner = self.env["res.partner"].create({
+            "name" : name,
+            "email" : email
+        })
+
+        user = self.env["res.users"].create({
+            "partner_id" : partner.id,
+            "login" : name,
+            "password" : name,
+            "groups_id": [(4, group_seller.id)],
+        })
+
+        self.env["real_estate.seller"].create({
+            "user_id" : user.id
+        })
+
     def seed_buyers(self):
-
-        print("SEEDING BUYERS - before group check")
-
         group_buyer = self.env.ref("real_estate.group_buyer", raise_if_not_found=False)
         if not group_buyer:
             raise ValueError("Group 'real_estate.group_buyer' not found. Make sure it exists")
 
-        print("SEEDING BUYERS - after group check")
+        self.create_buyer_buyer()
 
         for i in range(self.config["buyers"]):
             fname = random.choice(self.first_names)
@@ -87,6 +161,8 @@ class Dev(models.TransientModel):
         if not group_seller:
             raise ValueError("Group 'real_estate.group_seller' not found. Make sure it exists")
                          
+        self.create_seller_seller()
+
         for i in range(self.config["sellers"]):
             fname = random.choice(self.first_names)
             lname = random.choice(self.last_names)

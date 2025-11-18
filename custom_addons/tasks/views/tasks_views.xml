@@ -120,7 +120,8 @@
                 default_group_by="status"
                 default_order="priority"
                 records_draggable="1"
-                group_expand="True">
+                group_expand="True"
+            >
 
                 <!-- Optional progressbar showing status -->
                 <progressbar 
