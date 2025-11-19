@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Product category -->
+    <record id="category_focus_materials" model="product.category">
+        <field name="name">Focus Materials</field>
+    </record>
+
+    <!-- ============================ -->
+    <!--  PRODUCT ATTRIBUTE & VALUES  -->
+    <!-- ============================ -->
+
+    <!-- Create attribute FIRST -->
+    <record id="attr_gold_origin" model="product.attribute">
+        <field name="name">Gold Origin</field>
+        <field name="create_variant">always</field>
+    </record>
+
+    <!-- Create values -->
+    <record id="val_fairtrade" model="product.attribute.value">
+        <field name="name">Fairtrade</field>
+        <field name="attribute_id" ref="attr_gold_origin"/>
+    </record>
+
+    <record id="val_non_fair" model="product.attribute.value">
+        <field name="name">Non-Fair</field>
+        <field name="attribute_id" ref="attr_gold_origin"/>
+    </record>
+
+    <!-- ============================ -->
+    <!--  PRODUCT TEMPLATE (GOLD)     -->
+    <!-- ============================ -->
+
+    <record id="product_template_gold" model="product.template">
+        <field name="name">Gold</field>
+        <field name="type">consu</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+        <field name="tracking">lot</field>
+
+        <!-- Required because not-null -->
+        <field name="sale_line_warn">no-message</field>
+        <field name="purchase_line_warn">no-message</field>
+
+        <!-- UoM: 1 means "Unit(s)" always exists -->
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+
+        <!-- Exists on template -->
+        <field name="service_tracking">no</field>
+
+        <!-- If your DB column is forced not null -->
+        <field name="base_unit_count">0</field>
+
+        <!-- Assign attribute line -->
+        <field name="attribute_line_ids" eval="[(0, 0, {
+            'attribute_id': ref('attr_gold_origin'),
+            'value_ids': [(6, 0, [ref('val_fairtrade'), ref('val_non_fair')])]
+        })]"/>
+    </record>
+
+</odoo>

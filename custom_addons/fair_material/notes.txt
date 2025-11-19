@@ -27,6 +27,7 @@ FMD - Full Meterial Declaration
 
 
 QUSETIONS:
+* When creating initial products in data/products, why is product.type = product not accpeted?
 * Fair material program stock - This refers to material stock from this prorgam? Not total material stock from all prorgams?
 * Can one spare part belong to more Products? (e.g. USB cable)
 * Is it possible for a product to use only e.g. 70% of Fair materials? 

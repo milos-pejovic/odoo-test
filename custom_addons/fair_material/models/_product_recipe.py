@@ -2,8 +2,13 @@ from odoo import models, fields, api
 
 
 class ProductRecipe(models.Model):
+    """
+    Manufacturing BOM will be used instead of this
+    """
+    
     _name = "fair_material.product_recipe"
-    _description = "The list of all focus materials and their amounts needed to make a defined number of products"
+
+    _description = "Product recipe (FMD) - The list of all focus materials and their amounts needed to make a defined number of products"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description", required=False)
@@ -13,7 +18,7 @@ class ProductRecipe(models.Model):
 
     product_ids = fields.Many2many(
         string="Products",
-        comodel_name="fair_material.product",
+        comodel_name="product.product",
         relation="fair_material_recipe_product_rel",
         column1="recipe_id",
         column2="product_id",

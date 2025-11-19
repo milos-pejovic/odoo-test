@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="category_focus_materials" model="product.category">
+        <field name="name">Focus Materials</field>
+        <field name="parent_id" eval="False"/>
+    </record>
+
+    <!-- =================== -->
+    <!-- Material Templates and Variants -->
+    <!-- =================== -->
+
+    <!-- Material: Gold -->
+    <record id="product_template_gold" model="product.template">
+        <field name="name">Gold</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_gold_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_gold"/>
+        <field name="name">Fairtrade Gold</field>
+    </record>
+    <record id="product_gold_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_gold"/>
+        <field name="name">Non-Fair Gold</field>
+    </record>
+
+    <!-- Material: Tin -->
+    <record id="product_template_tin" model="product.template">
+        <field name="name">Tin</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tin_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tin"/>
+        <field name="name">Fairtrade Tin</field>
+    </record>
+    <record id="product_tin_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tin"/>
+        <field name="name">Non-Fair Tin</field>
+    </record>
+
+    <!-- Material: Tantalum -->
+    <record id="product_template_tantalum" model="product.template">
+        <field name="name">Tantalum</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tantalum_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tantalum"/>
+        <field name="name">Fairtrade Tantalum</field>
+    </record>
+    <record id="product_tantalum_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tantalum"/>
+        <field name="name">Non-Fair Tantalum</field>
+    </record>
+
+    <!-- Material: Tungsten -->
+    <record id="product_template_tungsten" model="product.template">
+        <field name="name">Tungsten</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tungsten_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tungsten"/>
+        <field name="name">Fairtrade Tungsten</field>
+    </record>
+    <record id="product_tungsten_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tungsten"/>
+        <field name="name">Non-Fair Tungsten</field>
+    </record>
+
+    <!-- Material: Cobalt -->
+    <record id="product_template_cobalt" model="product.template">
+        <field name="name">Cobalt</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_cobalt_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_cobalt"/>
+        <field name="name">Fairtrade Cobalt</field>
+    </record>
+    <record id="product_cobalt_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_cobalt"/>
+        <field name="name">Non-Fair Cobalt</field>
+    </record>
+
+    <!-- Material: Nickel -->
+    <record id="product_template_nickel" model="product.template">
+        <field name="name">Nickel</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_nickel_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_nickel"/>
+        <field name="name">Fairtrade Nickel</field>
+    </record>
+    <record id="product_nickel_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_nickel"/>
+        <field name="name">Non-Fair Nickel</field>
+    </record>
+
+    <!-- Material: Lithium -->
+    <record id="product_template_lithium" model="product.template">
+        <field name="name">Lithium</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_lithium_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_lithium"/>
+        <field name="name">Fairtrade Lithium</field>
+    </record>
+    <record id="product_lithium_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_lithium"/>
+        <field name="name">Non-Fair Lithium</field>
+    </record>
+
+    <!-- Material: Rare Earth Elements -->
+    <record id="product_template_ree" model="product.template">
+        <field name="name">Rare Earth Elements</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_ree_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_ree"/>
+        <field name="name">Fairtrade REE</field>
+    </record>
+    <record id="product_ree_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_ree"/>
+        <field name="name">Non-Fair REE</field>
+    </record>
+
+    <!-- Material: Silver -->
+    <record id="product_template_silver" model="product.template">
+        <field name="name">Silver</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_silver_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_silver"/>
+        <field name="name">Fairtrade Silver</field>
+    </record>
+    <record id="product_silver_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_silver"/>
+        <field name="name">Non-Fair Silver</field>
+    </record>
+
+    <!-- Material: Copper -->
+    <record id="product_template_copper" model="product.template">
+        <field name="name">Copper</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_copper_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_copper"/>
+        <field name="name">Fairtrade Copper</field>
+    </record>
+    <record id="product_copper_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_copper"/>
+        <field name="name">Non-Fair Copper</field>
+    </record>
+
+    <!-- Material: Tin -->
+    <record id="product_template_tin" model="product.template">
+        <field name="name">Tin</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tin_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tin"/>
+        <field name="name">Fairtrade Tin</field>
+    </record>
+    <record id="product_tin_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tin"/>
+        <field name="name">Non-Fair Tin</field>
+    </record>
+
+    <!-- Material: Cobalt -->
+    <record id="product_template_cobalt" model="product.template">
+        <field name="name">Cobalt</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_cobalt_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_cobalt"/>
+        <field name="name">Fairtrade Cobalt</field>
+    </record>
+    <record id="product_cobalt_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_cobalt"/>
+        <field name="name">Non-Fair Cobalt</field>
+    </record>
+
+    <!-- Material: Tungsten -->
+    <record id="product_template_tungsten" model="product.template">
+        <field name="name">Tungsten</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tungsten_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tungsten"/>
+        <field name="name">Fairtrade Tungsten</field>
+    </record>
+    <record id="product_tungsten_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tungsten"/>
+        <field name="name">Non-Fair Tungsten</field>
+    </record>
+
+    <!-- Material: Palladium -->
+    <record id="product_template_palladium" model="product.template">
+        <field name="name">Palladium</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_palladium_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_palladium"/>
+        <field name="name">Fairtrade Palladium</field>
+    </record>
+    <record id="product_palladium_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_palladium"/>
+        <field name="name">Non-Fair Palladium</field>
+    </record>
+
+    <!-- Material: Platinum -->
+    <record id="product_template_platinum" model="product.template">
+        <field name="name">Platinum</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_platinum_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_platinum"/>
+        <field name="name">Fairtrade Platinum</field>
+    </record>
+    <record id="product_platinum_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_platinum"/>
+        <field name="name">Non-Fair Platinum</field>
+    </record>
+
+    <!-- Material: Nickel -->
+    <record id="product_template_nickel" model="product.template">
+        <field name="name">Nickel</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_nickel_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_nickel"/>
+        <field name="name">Fairtrade Nickel</field>
+    </record>
+    <record id="product_nickel_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_nickel"/>
+        <field name="name">Non-Fair Nickel</field>
+    </record>
+
+    <!-- Material: Zinc -->
+    <record id="product_template_zinc" model="product.template">
+        <field name="name">Zinc</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_zinc_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_zinc"/>
+        <field name="name">Fairtrade Zinc</field>
+    </record>
+    <record id="product_zinc_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_zinc"/>
+        <field name="name">Non-Fair Zinc</field>
+    </record>
+
+    <!-- Material: Lead -->
+    <record id="product_template_lead" model="product.template">
+        <field name="name">Lead</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_lead_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_lead"/>
+        <field name="name">Fairtrade Lead</field>
+    </record>
+    <record id="product_lead_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_lead"/>
+        <field name="name">Non-Fair Lead</field>
+    </record>
+
+    <!-- Material: Silver -->
+    <record id="product_template_silver" model="product.template">
+        <field name="name">Silver</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_silver_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_silver"/>
+        <field name="name">Fairtrade Silver</field>
+    </record>
+    <record id="product_silver_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_silver"/>
+        <field name="name">Non-Fair Silver</field>
+    </record>
+
+    <!-- Material: Copper -->
+    <record id="product_template_copper" model="product.template">
+        <field name="name">Copper</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_copper_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_copper"/>
+        <field name="name">Fairtrade Copper</field>
+    </record>
+    <record id="product_copper_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_copper"/>
+        <field name="name">Non-Fair Copper</field>
+    </record>
+
+    <!-- Material: Tantalum -->
+    <record id="product_template_tantalum" model="product.template">
+        <field name="name">Tantalum</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tantalum_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tantalum"/>
+        <field name="name">Fairtrade Tantalum</field>
+    </record>
+    <record id="product_tantalum_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tantalum"/>
+        <field name="name">Non-Fair Tantalum</field>
+    </record>
+
+    <!-- Material: Cobalt -->
+    <record id="product_template_cobalt" model="product.template">
+        <field name="name">Cobalt</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_cobalt_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_cobalt"/>
+        <field name="name">Fairtrade Cobalt</field>
+    </record>
+    <record id="product_cobalt_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_cobalt"/>
+        <field name="name">Non-Fair Cobalt</field>
+    </record>
+
+    <!-- Material: Tungsten -->
+    <record id="product_template_tungsten" model="product.template">
+        <field name="name">Tungsten</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+    </record>
+    <record id="product_tungsten_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tungsten"/>
+        <field name="name">Fairtrade Tungsten</field>
+    </record>
+    <record id="product_tungsten_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_tungsten"/>
+        <field name="name">Non-Fair Tungsten</field>
+    </record>
+
+</odoo>

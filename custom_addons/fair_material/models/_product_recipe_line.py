@@ -3,8 +3,12 @@ from odoo.exceptions import ValidationError
 
 
 class ProductRecipeLine(models.Model):
+    """
+    Manufacturing BOM Line will be used instead of this
+    """
+
     _name = "fair_material.product_recipe_line"
-    _description = "" ##TODO
+    _description = "Product recipe line "
 
     product_recipe_id = fields.Many2one(
         string="Product recipe",
@@ -18,7 +22,6 @@ class ProductRecipeLine(models.Model):
         required=True
     )
 
-    ##TODO: constraint to positive value (allow 0?)
     amount = fields.Float(
         string="Amount (grams)",
         required=True,

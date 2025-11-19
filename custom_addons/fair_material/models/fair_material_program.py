@@ -40,7 +40,7 @@ class FairMaterialProgram(models.Model):
     # Focus material e.g. gold
     focus_material_id = fields.Many2one(
         string="Focus material",
-        comodel_name="fair_material.focus_material",
+        comodel_name="product.product",
         required=True
     )
 

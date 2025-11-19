@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_focus_material_user,Access Focus Material,model_fair_material_focus_material,base.group_user,1,1,1,1
 access_fair_material_program_user,Access Fair Material Program,model_fair_material_fair_material_program,base.group_user,1,1,1,1
+access_fair_material_allocation_per_product,Access Fair Material Allocation Per Product,model_fair_material_fair_material_allocation_per_product,base.group_user,1,1,1,1

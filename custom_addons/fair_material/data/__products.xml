@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="category_focus_materials" model="product.category">
+        <field name="name">Focus Materials</field>
+    </record>
+
+    <!-- Attribute values -->
+    <record id="val_fairtrade" model="product.attribute.value">
+        <field name="name">Fairtrade</field>
+        <field name="attribute_id" ref="attr_gold_origin"/>
+    </record>
+
+    <record id="val_non_fair" model="product.attribute.value">
+        <field name="name">Non-Fair</field>
+        <field name="attribute_id" ref="attr_gold_origin"/>
+    </record>
+
+    <record id="product_template_gold" model="product.template">
+        <field name="name">Gold</field>
+        <field name="categ_id" ref="category_focus_materials"/>
+        <field name="type">consu</field><!-- Why is "product" not accepted here? -->
+        <field name="purchase_line_warn">no-message</field>
+        <field name="sale_line_warn">no-message</field>
+        <field name="tracking">lot</field>
+        <field name="uom_id">1</field><!-- TODO  -->
+        <field name="uom_po_id">1</field><!-- TODO  -->
+        <field name="service_tracking">no</field>
+        <field name="base_unit_count">0</field>
+    </record>
+
+    <!-- Assign to template -->
+    <record id="product_template_gold" model="product.template">
+        <field name="name">Gold</field>
+        <field name="attribute_line_ids" eval="[(0, 0, {
+            'attribute_id': ref('attr_gold_origin'),
+            'value_ids': [(6, 0, [ref('val_fairtrade'), ref('val_non_fair')])]
+        })]"/>
+    </record>
+
+    <!-- <record id="product_gold_fairtrade" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_gold"/>
+        <field name="name">Fairtrade Gold</field>
+    </record>
+
+    <record id="product_gold_non_fair" model="product.product">
+        <field name="product_tmpl_id" ref="product_template_gold"/>
+        <field name="name">Non-Fair Gold</field>
+    </record> -->
+
+
+</odoo>

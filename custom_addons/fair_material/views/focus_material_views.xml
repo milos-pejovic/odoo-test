@@ -1,39 +1,43 @@
-
 <odoo>
-    <!-- Form view-->
+    <!-- ============================ -->
+    <!-- Form view (inherit product form) -->
+    <!-- ============================ -->
     <record id="fair_material_focus_material_view_form" model="ir.ui.view">
-        <field name="name">fair_material.focus_material.view.form</field>
-        <field name="model">fair_material.focus_material</field>
+        <field name="name">fair.material.product.form</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <h1>
-                            <field name="name" />
-                        </h1>
-                    </group>
-
-                </sheet>
-            </form>
+            <!-- Add a label after the product name -->
+            <field name="name" position="after">
+                <label string="(Focus Material)" for="name" class="oe_inline"/>
+            </field>
         </field>
     </record>
 
-    <!-- List View -->
+    <!-- ============================ -->
+    <!-- List view (inherit product variants list) -->
+    <!-- ============================ -->
     <record id="fair_material_focus_material_view_list" model="ir.ui.view">
-        <field name="name">fair_material.focus_material.view.list</field>
-        <field name="model">fair_material.focus_material</field>
+        <field name="name">fair.material.product.list</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_list_view"/>
         <field name="arch" type="xml">
-            <list>
-                <field name="name" />
-            </list>
-
+            <!-- Add category column after product name -->
+            <field name="name" position="after">
+                <field name="categ_id"/>
+            </field>
         </field>
     </record>
 
+    <!-- ============================ -->
     <!-- Action -->
+    <!-- ============================ -->
     <record id="focus_material_action" model="ir.actions.act_window">
-        <field name="name">Focus materials</field>
-        <field name="res_model">fair_material.focus_material</field>
+        <field name="name">Focus Materials</field>
+        <field name="res_model">product.product</field>
         <field name="view_mode">list,form</field>
+        <field name="view_id" ref="fair_material_focus_material_view_list"/>
+        <!-- Optional: filter only products in category 'Focus Materials' -->
+        <field name="domain">[('categ_id','=',ref('category_focus_materials'))]</field>
     </record>
 </odoo>

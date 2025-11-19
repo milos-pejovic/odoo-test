@@ -1,7 +1,7 @@
 {
     "name": "Fair material",
     "version": "1.0",
-    "depends": ["base", "website"],
+    "depends": ["base", "product", "mrp", "purchase", "sale_management", "stock", "account", "website_sale"],
     "author": "Milos Pejovic",
     "category": "Category",
     "description": """
@@ -9,8 +9,9 @@
     """,
     # data files always loaded at installation
     "data": [
-        "data/groups.xml",
         "security/ir.model.access.csv",
+        "data/groups.xml",
+        "data/products.xml",
 
         # Actions first
         "views/focus_material_views.xml",
@@ -20,7 +21,7 @@
     ],
     # data files containing optionally loaded demonstration data
     "demo": [
-        # "demo/demo_data.xml",
+        "demo/demo_data.xml",
     ],
     "application": True,
     "installable": True
