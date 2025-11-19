@@ -5,23 +5,22 @@
     "author": "Milos Pejovic",
     "category": "Category",
     "description": """
-    Practice module for Fair material
+    Practice module for Fair material.
     """,
     # data files always loaded at installation
     "data": [
         "data/groups.xml",
-
         "security/ir.model.access.csv",
 
         # Actions first
-
+        "views/focus_material_views.xml",
 
         # Then the menu that references it
         "views/fm_menus.xml",
     ],
     # data files containing optionally loaded demonstration data
     "demo": [
-        "demo/demo_data.xml",
+        # "demo/demo_data.xml",
     ],
     "application": True,
     "installable": True

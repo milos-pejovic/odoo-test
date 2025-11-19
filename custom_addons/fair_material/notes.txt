@@ -1,0 +1,33 @@
+PRODUCT
+    uses 1+ FMs
+    Spare part
+
+    Product
+        * Product
+        * Spare part
+
+    Product can have 1+ of each spare part
+
+FOCUS MATERIAL
+    * Focus Material (gold, silver, tungstein)
+    * Fair Material Programme (0, 1 or more per material)
+
+FAIR MATERIAL
+
+PRODUCT RECIPE
+    One recipe several Products (if products similar)
+
+
+PLANNING PERIOD
+
+
+FMD - Full Meterial Declaration
+
+
+
+
+QUSETIONS:
+* Fair material program stock - This refers to material stock from this prorgam? Not total material stock from all prorgams?
+* Can one spare part belong to more Products? (e.g. USB cable)
+* Is it possible for a product to use only e.g. 70% of Fair materials? 
+    * NOTE: material might not 100% from fair sources, so we need to be able to set up the fair material programs and the %, respectively.  
