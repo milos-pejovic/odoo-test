@@ -32,3 +32,5 @@ QUSETIONS:
 * Can one spare part belong to more Products? (e.g. USB cable)
 * Is it possible for a product to use only e.g. 70% of Fair materials? 
     * NOTE: material might not 100% from fair sources, so we need to be able to set up the fair material programs and the %, respectively.  
+
+* What is a credit program in the context of fair material program?

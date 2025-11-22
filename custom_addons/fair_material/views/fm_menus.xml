@@ -1,8 +1,12 @@
 <odoo>
     <menuitem id="root_fair_material" name="Fair material"/>
 
-    <menuitem id="focus_materials" name="Focus materials" parent="root_fair_material">
-        <menuitem id="menu_third_level_ads" name="Focus materials list" action="focus_material_action"/>
+    <!-- <menuitem id="focus_materials" name="Focus materials" parent="root_fair_material">
+        <menuitem id="menu_third_level_ads" name="Focus materials list" action="action_fair_material_products"/>
+    </menuitem> -->
+
+    <menuitem id="fair_material_programs" name="Fair material programs" parent="root_fair_material">
+        <menuitem id="fair_material_programs_list" name="Fair material list" action="fair_material_program_action"/>
     </menuitem>
 
 </odoo>

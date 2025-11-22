@@ -4,6 +4,7 @@ from odoo import models, fields
 class MrpBomLine(models.Model):
     _inherit = 'mrp.bom.line'
 
+    ##TODO: DOes BOM line already have this?
     focus_material_id = fields.Many2one(
         comodel_name="product.product",
         string='Focus Material'
@@ -17,5 +18,5 @@ class MrpBomLine(models.Model):
         help='List of product variants this BOM applies to.'
     )
 
-    # Amount
-    # Bom line already has "product_qty" field which can be used for quantity
+    # batch size
+    # Bom line already has "product_qty" field which can be used for the number of products

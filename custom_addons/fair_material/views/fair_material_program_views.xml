@@ -1,0 +1,47 @@
+<odoo>
+    <!-- Form view-->
+    <record id="real_estate_sellerview_form" model="ir.ui.view">
+        <field name="name">fair_material.fair_material_program.view.form</field>
+        <field name="model">fair_material.fair_material_program</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="techincal_name" readonly="1"/>
+                        <field name="date_of_establishment" />
+                        <field name="description" />
+                        <field name="current_stock" />
+                        <field name="cost_per_gram" />
+                        <field name="focus_material_id" />
+                        <field name="default_allocation" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="real_estate_seller_list_view_list" model="ir.ui.view">
+        <field name="name">fair_material.fair_material_program.view.list</field>
+        <field name="model">fair_material.fair_material_program</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" width="150" />
+                <field name="date_of_establishment" />
+                <field name="description" width="300" />
+                <field name="current_stock" />
+                <field name="cost_per_gram" width="150"/>
+                <field name="focus_material_id" width="200" />
+                <field name="default_allocation" width="150" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="fair_material_program_action" model="ir.actions.act_window">
+        <field name="name">Fair material programs</field>
+        <field name="res_model">fair_material.fair_material_program</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
